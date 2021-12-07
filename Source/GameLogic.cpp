@@ -24,13 +24,6 @@ GameLogic::~GameLogic()
 
 // -------------------------------------------------------------------------------------------------
 
-const PublicGameState* GameLogic::GetGameState() const
-{
-	return dynamic_cast<PublicGameState*>(m_gameState.get());
-}
-
-// -------------------------------------------------------------------------------------------------
-
 void GameLogic::Run()
 {
 	m_inProgress = true;

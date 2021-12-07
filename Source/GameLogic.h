@@ -1,7 +1,6 @@
 #pragma once
 #include "Enums.h"
 #include <memory>
-#include <functional>
 
 class Card;
 class PlayerInterface;
@@ -10,20 +9,11 @@ class PublicGameState;
 
 // -------------------------------------------------------------------------------------------------
 
-typedef std::function<void()> ResolveTurnEvent;
-typedef std::function<void()> ResolveNightmareCardEvent;
-typedef std::function<void()> ResolveDoorCardEvent;
-typedef std::function<void()> ResolvePremonitionEvent;
-
-// -------------------------------------------------------------------------------------------------
-
 class GameLogic
 {
 public:
 	GameLogic(PlayerInterface& player);
 	~GameLogic();
-
-	const PublicGameState* GetGameState() const;
 
 	void Run();
 
