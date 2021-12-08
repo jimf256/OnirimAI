@@ -16,6 +16,7 @@ public:
 	~GameLogic();
 
 	void Run();
+	EGameResult GetResult() const { return m_result; }
 
 private:
 	void InitializeDeck();
@@ -29,7 +30,8 @@ private:
 	void OnGameOver(EGameResult result);
 
 private:
-	bool m_inProgress = false;
+	bool m_inProgress;
+	EGameResult m_result;
 	PlayerInterface& m_player;
 	std::unique_ptr<InternalGameState> m_gameState;
 };

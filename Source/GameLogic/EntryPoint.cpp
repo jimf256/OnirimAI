@@ -61,6 +61,9 @@ int main(int argc, char* argv[])
 			GameLogic logic(*player);
 			logic.Run();
 			g_destroyPlayer(player);
+
+			// return the game result as the exit code
+			return static_cast<int>(logic.GetResult());
 		}
 		else
 		{

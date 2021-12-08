@@ -10,8 +10,9 @@
 // -------------------------------------------------------------------------------------------------
 
 GameLogic::GameLogic(PlayerInterface& player)
-	: m_player(player)
-	, m_inProgress(false)
+	: m_inProgress(false)
+	, m_result(EGameResult::Unknown)
+	, m_player(player)
 {
 	m_gameState.reset(new InternalGameState());
 }
@@ -596,6 +597,7 @@ void GameLogic::CheckForLabrynthDoor()
 
 void GameLogic::OnGameOver(EGameResult result)
 {
+	m_result = result;
 	m_inProgress = false;
 	m_player.GameOver(result);
 }

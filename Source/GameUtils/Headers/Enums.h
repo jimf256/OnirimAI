@@ -54,9 +54,10 @@ enum class EResolveDoorAction
 
 enum class EGameResult
 {
-	Win,
-	Loss_OutOfCards,
-	Loss_DiscardedDoor,
+	Unknown            = 0,
+	Win                = 1,
+	Loss_OutOfCards    = 2,
+	Loss_DiscardedDoor = 3,
 };
 
 // -------------------------------------------------------------------------------------------------
