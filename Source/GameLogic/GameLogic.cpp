@@ -161,22 +161,19 @@ void GameLogic::DrawCards(bool nonLocationCardsToLimbo)
 	// check for game over - out of cards
 	if (hand.Size() < kMaxHandSize && deck.Size() == 0)
 	{
-		m_inProgress = false;
-		m_player.GameOver(false);
+		OnGameOver(EGameResult::Loss_OutOfCards);
 	}
 
 	// check for game over - a door was discarded
 	if (discard.DoorWasDiscarded())
 	{
-		m_inProgress = false;
-		m_player.GameOver(true);
+		OnGameOver(EGameResult::Loss_DiscardedDoor);
 	}
 
 	// check for game over - all doors completed
 	if (doorProgress.HasAllDoors())
 	{
-		m_inProgress = false;
-		m_player.GameOver(true);
+		OnGameOver(EGameResult::Win);
 	}
 }
 
@@ -593,6 +590,14 @@ void GameLogic::CheckForLabrynthDoor()
 
 		deck.Shuffle();
 	}
+}
+
+// -------------------------------------------------------------------------------------------------
+
+void GameLogic::OnGameOver(EGameResult result)
+{
+	m_inProgress = false;
+	m_player.GameOver(result);
 }
 
 // -------------------------------------------------------------------------------------------------

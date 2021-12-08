@@ -14,6 +14,7 @@ namespace LogUtils
 	std::string GetCollectionContents(const CardCollection& collection, bool oneLine, bool useAbbrev);
 	std::string GetColor(EColor color);
 	std::string GetCardType(ECardType type);
+	std::string GetGameResult(EGameResult result);
 }
 
 // -------------------------------------------------------------------------------------------------

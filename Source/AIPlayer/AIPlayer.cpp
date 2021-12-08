@@ -13,7 +13,7 @@ AIPlayer::AIPlayer()
 
 // -------------------------------------------------------------------------------------------------
 
-void AIPlayer::GameOver(bool success)
+void AIPlayer::GameOver(EGameResult result)
 {
 }
 

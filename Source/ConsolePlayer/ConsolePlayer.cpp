@@ -13,10 +13,10 @@ ConsolePlayer::ConsolePlayer()
 
 // -------------------------------------------------------------------------------------------------
 
-void ConsolePlayer::GameOver(bool success)
+void ConsolePlayer::GameOver(EGameResult result)
 {
 	std::cout << "\n::: GAME OVER :::\n";
-	std::cout << "you " << (success ? "won" : "lost") << " the game\n\n";
+	std::cout << "You " << LogUtils::GetGameResult(result) << "\n\n";
 	system("pause");
 }
 

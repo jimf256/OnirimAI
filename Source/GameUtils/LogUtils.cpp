@@ -122,3 +122,17 @@ std::string LogUtils::GetCardType(ECardType type)
 }
 
 // -------------------------------------------------------------------------------------------------
+
+std::string LogUtils::GetGameResult(EGameResult result)
+{
+	switch (result)
+	{
+		case EGameResult::Win:                return "Win";
+		case EGameResult::Loss_DiscardedDoor: return "Lose (door discarded)";
+		case EGameResult::Loss_OutOfCards:    return "Lose (out of cards)";
+	}
+
+	return "unknown";
+}
+
+// -------------------------------------------------------------------------------------------------

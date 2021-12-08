@@ -8,7 +8,7 @@ class AIPlayer : public PlayerInterface
 public:
 	AIPlayer();
 
-	virtual void GameOver(bool success);
+	virtual void GameOver(EGameResult result);
 	virtual void CardDrawn(const Card& card);
 	virtual void DoorModified(EColor color, bool added);
 	virtual void ResolveTurnAction(const PublicGameState& state, ETurnAction& choice, std::size_t& handIndex);
