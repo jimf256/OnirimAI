@@ -4,6 +4,8 @@
 
 class Card;
 class CardCollection;
+class DoorProgress;
+class DiscardTracker;
 
 // -------------------------------------------------------------------------------------------------
 
@@ -15,6 +17,8 @@ namespace LogUtils
 	std::string GetColor(EColor color);
 	std::string GetCardType(ECardType type);
 	std::string GetGameResult(EGameResult result);
+	std::string GetDoorState(const DoorProgress& progress);
+	std::string GetDiscardState(const DiscardTracker& discard);
 }
 
 // -------------------------------------------------------------------------------------------------

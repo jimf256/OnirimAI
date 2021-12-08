@@ -600,6 +600,17 @@ void GameLogic::OnGameOver(EGameResult result)
 	m_result = result;
 	m_inProgress = false;
 	m_player.GameOver(result);
+
+	// print end-of-game state to the log
+	LOG("\n\n::: game ended :::\n");
+	LOG("game result: " + LogUtils::GetGameResult(result) + "\n");
+	LOG("doors:\n" + LogUtils::GetDoorState(m_gameState->GetDoorProgress()));
+	LOG("labrynth: " + LogUtils::GetCollectionContents(m_gameState->GetLabrynth(), true, true));
+	LOG("hand: " + LogUtils::GetCollectionContents(m_gameState->GetHand(), true, true));
+	LOG("discard:\n" + LogUtils::GetDiscardState(m_gameState->GetDiscard()));
+	LOG("limbo: " + LogUtils::GetCollectionContents(m_gameState->GetLimbo(), true, true));
+	LOG("deck: " + LogUtils::GetCollectionContents(m_gameState->GetDeck(), true, true));
+
 }
 
 // -------------------------------------------------------------------------------------------------

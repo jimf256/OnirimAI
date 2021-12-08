@@ -1,6 +1,8 @@
 #include "LogUtils.h"
 #include "Card.h"
 #include "CardCollection.h"
+#include "DoorProgress.h"
+#include "DiscardTracker.h"
 #include <sstream>
 
 // -------------------------------------------------------------------------------------------------
@@ -134,6 +136,44 @@ std::string LogUtils::GetGameResult(EGameResult result)
 	}
 
 	return "unknown";
+}
+
+// -------------------------------------------------------------------------------------------------
+
+std::string LogUtils::GetDoorState(const DoorProgress& progress)
+{
+	static std::ostringstream output;
+	output.str("");
+
+	std::vector<EColor> colors { EColor::Red, EColor::Blue, EColor::Green, EColor::Yellow };
+	for (auto it = colors.begin(); it != colors.end(); ++it)
+	{
+		output << " " << GetColor(*it) << " doors: " << progress.CountDoors(*it) << "/" << progress.GetDoorsRequired() << "\n";
+	}
+
+	return output.str();
+}
+
+// -------------------------------------------------------------------------------------------------
+
+std::string LogUtils::GetDiscardState(const DiscardTracker& discard)
+{
+	static std::ostringstream output;
+	output.str("");
+
+	std::vector<ECardType> cardTypes { ECardType::Sun, ECardType::Moon, ECardType::Key, ECardType::Door };
+	std::vector<EColor> colors { EColor::Red, EColor::Blue, EColor::Green, EColor::Yellow };
+	for (auto colIt = colors.begin(); colIt != colors.end(); ++colIt)
+	{
+		output << " " << GetColor(*colIt) << ": ";
+		for (auto typeIt = cardTypes.begin(); typeIt != cardTypes.end(); ++typeIt)
+		{
+			output << GetCardType(*typeIt) << ": " << discard.GetColorCardCount(*colIt, *typeIt) << "   ";
+		}
+		output << "\n";
+	}
+
+	return output.str();
 }
 
 // -------------------------------------------------------------------------------------------------

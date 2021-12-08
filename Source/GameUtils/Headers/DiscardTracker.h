@@ -8,9 +8,10 @@ class Card;
 
 struct DiscardCounts
 {
-	int sun;
-	int moon;
-	int key;
+	int sun = 0;
+	int moon = 0;
+	int key = 0;
+	int door = 0;
 };
 
 // -------------------------------------------------------------------------------------------------

@@ -18,9 +18,10 @@ int DiscardTracker::GetColorCardCount(EColor color, ECardType type) const
 	{
 		switch (type)
 		{
-			case ECardType::Sun: return m_cardCounts.at(color).sun;
+			case ECardType::Sun:  return m_cardCounts.at(color).sun;
 			case ECardType::Moon: return m_cardCounts.at(color).moon;
-			case ECardType::Key: return m_cardCounts.at(color).key;
+			case ECardType::Key:  return m_cardCounts.at(color).key;
+			case ECardType::Door: return m_cardCounts.at(color).door;
 
 			default:
 				return 0;
@@ -45,12 +46,13 @@ void DiscardTracker::DiscardCard(const Card& card)
 		{
 			switch (card.Type())
 			{
-				case ECardType::Sun: m_cardCounts[card.Color()].sun++; break;
+				case ECardType::Sun:  m_cardCounts[card.Color()].sun++; break;
 				case ECardType::Moon: m_cardCounts[card.Color()].moon++; break;
-				case ECardType::Key: m_cardCounts[card.Color()].key++; break;
+				case ECardType::Key:  m_cardCounts[card.Color()].key++; break;
 
 				case ECardType::Door:
 				{
+					m_cardCounts[card.Color()].door++;
 					m_doorDiscarded = true;
 					break;
 				}

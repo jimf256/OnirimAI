@@ -9,6 +9,8 @@ class DoorProgress
 public:
 	DoorProgress(int doorsPerColor = 2);
 
+	int GetDoorsRequired() const { return m_doorsRequired; }
+
 	bool HasAllDoors() const;
 	bool HasAllDoors(EColor color) const;
 
