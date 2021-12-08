@@ -15,6 +15,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameLogic", "GameLogic\Game
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameUtils", "GameUtils\GameUtils.vcxproj", "{D987764D-B837-4DE4-8526-D7974F50F82A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AIPlayer", "AIPlayer\AIPlayer.vcxproj", "{45F42EEC-20C6-45D6-B38E-E43DE5002B4F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D987764D-B837-4DE4-8526-D7974F50F82A} = {D987764D-B837-4DE4-8526-D7974F50F82A}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -47,6 +52,14 @@ Global
 		{D987764D-B837-4DE4-8526-D7974F50F82A}.Release|x64.Build.0 = Release|x64
 		{D987764D-B837-4DE4-8526-D7974F50F82A}.Release|x86.ActiveCfg = Release|Win32
 		{D987764D-B837-4DE4-8526-D7974F50F82A}.Release|x86.Build.0 = Release|Win32
+		{45F42EEC-20C6-45D6-B38E-E43DE5002B4F}.Debug|x64.ActiveCfg = Debug|x64
+		{45F42EEC-20C6-45D6-B38E-E43DE5002B4F}.Debug|x64.Build.0 = Debug|x64
+		{45F42EEC-20C6-45D6-B38E-E43DE5002B4F}.Debug|x86.ActiveCfg = Debug|Win32
+		{45F42EEC-20C6-45D6-B38E-E43DE5002B4F}.Debug|x86.Build.0 = Debug|Win32
+		{45F42EEC-20C6-45D6-B38E-E43DE5002B4F}.Release|x64.ActiveCfg = Release|x64
+		{45F42EEC-20C6-45D6-B38E-E43DE5002B4F}.Release|x64.Build.0 = Release|x64
+		{45F42EEC-20C6-45D6-B38E-E43DE5002B4F}.Release|x86.ActiveCfg = Release|Win32
+		{45F42EEC-20C6-45D6-B38E-E43DE5002B4F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
