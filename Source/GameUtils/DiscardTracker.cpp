@@ -1,5 +1,6 @@
 #include "DiscardTracker.h"
 #include "Card.h"
+#include <vector>
 #include <cassert>
 
 // -------------------------------------------------------------------------------------------------
@@ -8,6 +9,12 @@ DiscardTracker::DiscardTracker()
 	: m_nightmareCount(0)
 	, m_doorDiscarded(false)
 {
+	// initialize to zero values
+	std::vector<EColor> colors { EColor::Red, EColor::Blue, EColor::Green, EColor::Yellow };
+	for (auto it = colors.begin(); it != colors.end(); ++it)
+	{
+		m_cardCounts[*it] = DiscardCounts();
+	}
 }
 
 // -------------------------------------------------------------------------------------------------
