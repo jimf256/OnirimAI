@@ -19,3 +19,17 @@ public:
 
 // -------------------------------------------------------------------------------------------------
 
+extern "C" __declspec(dllexport) PlayerInterface* CreatePlayerInstance()
+{
+	return new ConsolePlayer();
+}
+
+// -------------------------------------------------------------------------------------------------
+
+extern "C" __declspec(dllexport) void DestroyPlayerInstance(PlayerInterface* player)
+{
+	delete player;
+}
+
+// -------------------------------------------------------------------------------------------------
+

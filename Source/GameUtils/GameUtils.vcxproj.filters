@@ -7,9 +7,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="EntryPoint.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Card.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -19,63 +16,45 @@
     <ClCompile Include="DiscardTracker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PublicGameState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InternalGameState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameLogic.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DoorProgress.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ConsolePlayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LogUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Logging.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LogUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PublicGameState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Card.h">
+    <ClInclude Include="Headers\Card.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Enums.h">
+    <ClInclude Include="Headers\CardCollection.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="CardCollection.h">
+    <ClInclude Include="Headers\DiscardTracker.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="DiscardTracker.h">
+    <ClInclude Include="Headers\DoorProgress.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="PublicGameState.h">
+    <ClInclude Include="Headers\Enums.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="InternalGameState.h">
+    <ClInclude Include="Headers\Logging.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameLogic.h">
+    <ClInclude Include="Headers\LogUtils.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="DoorProgress.h">
+    <ClInclude Include="Headers\PlayerInterface.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerInterface.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ConsolePlayer.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LogUtils.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Logging.h">
+    <ClInclude Include="Headers\PublicGameState.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
