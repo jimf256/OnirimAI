@@ -54,66 +54,75 @@ void ConsolePlayer::ResolveTurnAction(const PublicGameState& state, ETurnAction&
 	while (true)
 	{
 		// pick a card to play or discard
-		int cardNumber = -1;
-		std::cout << "pick a card: ";
-		std::cin >> cardNumber;
+		std::string input = "";
+		std::cout << "pick a card, or 'd' to view discard: ";
+		std::getline(std::cin, input, '\n');
 
-		if (cardNumber < 1 || cardNumber > 5)
+		if (input.size() != 1 || (input[0] != 'd' && (input[0] < '1' || input[0] > '5')))
 		{
 			std::cout << "try again\n";
 			continue;
 		}
 
-		// pick an action
-		std::cout << "pick an action:\n 1. play\n 2. discard\n\nchoice: ";
-		int cardAction = -1;
-		std::cin >> cardAction;
-
-		if (cardAction == 1)
+		if (input[0] == 'd')
 		{
-			// check the chosen card can be played to the labrynth
-			Card handCard;
-			if (state.GetHand().GetAtIndex(cardNumber - 1, handCard))
-			{
-				Card labCard;
-				if (state.GetLabrynth().Size() == 0 ||
-					(state.GetLabrynth().GetBottom(labCard) && labCard.Type() != handCard.Type()))
-				{
-					choice = ETurnAction::PlayCard;
-					handIndex = cardNumber - 1;
-
-					std::cout << "\nplaying " << LogUtils::GetCardName(handCard) << "\n";
-					break;
-				}
-				else
-				{
-					std::cout << "\nyou can't play that\n";
-					continue;
-				}
-			}
-			else
-			{
-				std::cout << "\ninvalid card\n";
-				continue;
-			}
-		}
-		else if (cardAction == 2)
-		{
-			// card chosen to be discarded
-			Card handCard;
-			if (state.GetHand().GetAtIndex(cardNumber - 1, handCard))
-			{
-				choice = ETurnAction::DiscardCard;
-				handIndex = cardNumber - 1;
-
-				std::cout << "\ndiscarding " << LogUtils::GetCardName(handCard) << "\n";
-				break;
-			}
+			// print discard pile
+			std::cout << "discard pile:\n";
+			std::cout << LogUtils::GetDiscardState(state.GetDiscard()) << "\n";
 		}
 		else
 		{
-			std::cout << "\ntry again\n";
-			continue;
+			std::size_t cardNumber = static_cast<std::size_t>(input[0]) - '1' + 1;
+
+			// pick an action for the chosen card
+			std::cout << "pick an action:\n 1. play\n 2. discard\n\nchoice: ";
+			std::getline(std::cin, input, '\n');
+			if (input.size() != 1 || (input[0] != '1' && input[0] != '2'))
+			{
+				std::cout << "\ntry again\n";
+				continue;
+			}
+			else if (input[0] == '1')
+			{
+				// check the chosen card can be played to the labrynth
+				Card handCard;
+				if (state.GetHand().GetAtIndex(cardNumber - 1, handCard))
+				{
+					Card labCard;
+					if (state.GetLabrynth().Size() == 0 ||
+						(state.GetLabrynth().GetBottom(labCard) && labCard.Type() != handCard.Type()))
+					{
+						choice = ETurnAction::PlayCard;
+						handIndex = cardNumber - 1;
+
+						std::cout << "\nplaying " << LogUtils::GetCardName(handCard) << "\n";
+						break;
+					}
+					else
+					{
+						std::cout << "\nyou can't play that\n";
+						continue;
+					}
+				}
+				else
+				{
+					std::cout << "\ninvalid card\n";
+					continue;
+				}
+			}
+			else if (input[0] == '2')
+			{
+				// card chosen to be discarded
+				Card handCard;
+				if (state.GetHand().GetAtIndex(cardNumber - 1, handCard))
+				{
+					choice = ETurnAction::DiscardCard;
+					handIndex = cardNumber - 1;
+
+					std::cout << "\ndiscarding " << LogUtils::GetCardName(handCard) << "\n";
+					break;
+				}
+			}
 		}
 	}
 }
@@ -128,9 +137,14 @@ void ConsolePlayer::ResolveNightmareCard(const PublicGameState& state, EResolveN
 			<< " 1. discard a key card\n 2. discard your hand\n 3. discard top five cards of the deck\n 4. destroy a door"
 			<< "\n\n choice: ";
 
-		int chosenOption = -1;
-		std::cin >> chosenOption;
-		if (chosenOption == 1)
+		std::string input = "";
+		std::getline(std::cin, input, '\n');
+		if (input.size() != 1 || (input[0] < '1' || input[0] > '4'))
+		{
+			std::cout << "try again\n";
+			continue;
+		}
+		else if (input[0] == '1')
 		{
 			// discard a key card
 			// find which colours of keys we have in hand
@@ -150,7 +164,7 @@ void ConsolePlayer::ResolveNightmareCard(const PublicGameState& state, EResolveN
 			std::unordered_map<int, EColor> colorNumbers;
 			if (keyCount > 0)
 			{
-				std::cout << "choose a key to discard:\n";
+				std::cout << "\nchoose a key to discard:\n";
 				int number = 1;
 				for (auto it = hasKey.begin(); it != hasKey.end(); ++it)
 				{
@@ -161,9 +175,10 @@ void ConsolePlayer::ResolveNightmareCard(const PublicGameState& state, EResolveN
 						number++;
 					}
 				}
+				std::cout << "\nchoice: ";
 
-				int colorChoice = -1;
-				std::cin >> colorChoice;
+				std::getline(std::cin, input, '\n');
+				int colorChoice = (input.size() == 1) ? (static_cast<int>(input[0]) - '1' + 1) : 0;
 				if (colorChoice < 1 || colorChoice > static_cast<int>(hasKey.size()))
 				{
 					std::cout << "invalid key selection\n";
@@ -177,19 +192,19 @@ void ConsolePlayer::ResolveNightmareCard(const PublicGameState& state, EResolveN
 				}
 			}
 		}
-		else if (chosenOption == 2)
+		else if (input[0] == '2')
 		{
 			// discard entire hand
 			choice = EResolveNightmareAction::DiscardHand;
 			break;
 		}
-		else if (chosenOption == 3)
+		else if (input[0] == '3')
 		{
 			// discard top five cards of the deck
 			choice = EResolveNightmareAction::DiscardDeck;
 			break;
 		}
-		else if (chosenOption == 4)
+		else if (input[0] == '4')
 		{
 			// destroy a door
 			// check there are actually doors to destroy
@@ -216,8 +231,8 @@ void ConsolePlayer::ResolveNightmareCard(const PublicGameState& state, EResolveN
 			}
 
 			std::cout << "\nchoice: ";
-			int colorChoice;
-			std::cin >> colorChoice;
+			std::getline(std::cin, input, '\n');
+			int colorChoice = (input.size() == 1) ? (static_cast<int>(input[0]) - '1' + 1) : 0;
 			if (colorChoice < 1 || colorChoice > static_cast<int>(colorNumbers.size()))
 			{
 				std::cout << "invalid door selection\n";
@@ -230,11 +245,6 @@ void ConsolePlayer::ResolveNightmareCard(const PublicGameState& state, EResolveN
 				break;
 			}
 		}
-		else
-		{
-			std::cout << "try again\n";
-			continue;
-		}
 	}
 }
 
@@ -245,9 +255,9 @@ void ConsolePlayer::ResolveDoorCard(const PublicGameState& state, const Card& do
 	std::cout << "\ndiscard a " << LogUtils::GetColor(doorCard.Color()) << " key to gain a "
 		      << LogUtils::GetColor(doorCard.Color()) << " door (y/n)? ";
 
-	char input = '0';
-	std::cin >> input;
-	if (input == 'y')
+	std::string input = "";
+	std::getline(std::cin, input, '\n');
+	if (input.size() == 1 && input[0] == 'y')
 	{
 		choice = EResolveDoorAction::DiscardKeyCard;
 	}
