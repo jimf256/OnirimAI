@@ -1,4 +1,6 @@
-import subprocess, os, time, python_ai_logic
+import subprocess, os, sys, time
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Source', 'PythonAI'))
+import python_ai_logic
 
 cpp_file = 'cpp_data.txt'
 python_file = 'python_data.txt'
