@@ -67,6 +67,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\GameUtils\Headers\Card.h" />
+    <ClInclude Include="..\GameUtils\Headers\CardCollection.h" />
+    <ClInclude Include="..\GameUtils\Headers\CardCounter.h" />
+    <ClInclude Include="..\GameUtils\Headers\DoorProgress.h" />
+    <ClInclude Include="..\GameUtils\Headers\Enums.h" />
+    <ClInclude Include="..\GameUtils\Headers\LogUtils.h" />
+    <ClInclude Include="..\GameUtils\Headers\PlayerInterface.h" />
+    <ClInclude Include="..\GameUtils\Headers\PublicGameState.h" />
     <ClInclude Include="PlayerTemplate.h" />
   </ItemGroup>
   <ItemGroup>
