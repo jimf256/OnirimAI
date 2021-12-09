@@ -64,7 +64,6 @@ void AIPlayer::OnDoorModified(EColor color, EDoorModification modification)
 void AIPlayer::ResolveTurnAction(const PublicGameState& state, ETurnAction& choice, std::size_t& handIndex)
 {
 	const std::vector<Card> hand = state.GetHand().GetCards();
-	const std::vector<Card>& labrynth = state.GetLabrynth().GetCards();
 
 	// for the below: ignore colors for which we already have all doors
 	// 1. can we play a card to get a door right now (third in a series)?
