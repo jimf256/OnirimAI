@@ -1,5 +1,7 @@
 @echo off
 
+echo | call clean_build_all.bat
+
 set build_dir=%~dp0Build
 if exist %build_dir% (
 	rmdir /S /Q "%build_dir%"
