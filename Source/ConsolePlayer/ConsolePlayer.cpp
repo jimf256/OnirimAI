@@ -75,7 +75,7 @@ void ConsolePlayer::ResolveTurnAction(const PublicGameState& state, ETurnAction&
 		{
 			// print discard pile
 			std::cout << "discard pile:\n";
-			std::cout << LogUtils::GetDiscardState(state.GetDiscard()) << "\n";
+			std::cout << LogUtils::GetCardCounterState(state.GetDiscard()) << "\n";
 		}
 		else
 		{

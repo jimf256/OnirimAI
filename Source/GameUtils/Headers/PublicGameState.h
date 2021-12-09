@@ -1,6 +1,6 @@
 #pragma once
 #include "DoorProgress.h"
-#include "DiscardTracker.h"
+#include "CardCounter.h"
 #include "CardCollection.h"
 
 // -------------------------------------------------------------------------------------------------
@@ -15,7 +15,7 @@ public:
 	const CardCollection& GetHand() const { return m_hand; }
 	const CardCollection& GetLimbo() const { return m_limbo; }
 	const CardCollection& GetLabrynth() const { return m_labrynth; }
-	const DiscardTracker& GetDiscard() const { return m_discard; }
+	const CardCounter& GetDiscard() const { return m_discard; }
 	const DoorProgress& GetDoorProgress() const { return m_doorProgress; }
 
 	std::size_t GetDeckRemaining() const { return m_deckRemaining; }
@@ -25,7 +25,7 @@ protected:
 	CardCollection m_hand;
 	CardCollection m_limbo;
 	CardCollection m_labrynth;
-	DiscardTracker m_discard;
+	CardCounter m_discard;
 	DoorProgress m_doorProgress;
 
 	std::size_t m_deckRemaining;

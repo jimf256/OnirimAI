@@ -2,7 +2,7 @@
 #include "Card.h"
 #include "CardCollection.h"
 #include "DoorProgress.h"
-#include "DiscardTracker.h"
+#include "CardCounter.h"
 #include <sstream>
 
 // -------------------------------------------------------------------------------------------------
@@ -156,7 +156,7 @@ std::string LogUtils::GetDoorState(const DoorProgress& progress)
 
 // -------------------------------------------------------------------------------------------------
 
-std::string LogUtils::GetDiscardState(const DiscardTracker& discard)
+std::string LogUtils::GetCardCounterState(const CardCounter& counter)
 {
 	static std::ostringstream output;
 	output.str("");
@@ -168,10 +168,11 @@ std::string LogUtils::GetDiscardState(const DiscardTracker& discard)
 		output << " " << GetColor(*colIt) << ": ";
 		for (auto typeIt = cardTypes.begin(); typeIt != cardTypes.end(); ++typeIt)
 		{
-			output << GetCardType(*typeIt) << ": " << discard.GetColorCardCount(*colIt, *typeIt) << "   ";
+			output << GetCardType(*typeIt) << ": " << counter.Get(*colIt, *typeIt) << " ";
 		}
 		output << "\n";
 	}
+	output << " Nightmare: " << counter.Get(ECardType::Nightmare) << "\n";
 
 	return output.str();
 }

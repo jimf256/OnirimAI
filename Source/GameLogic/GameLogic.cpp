@@ -102,14 +102,14 @@ void GameLogic::DrawCards(bool nonLocationCardsToLimbo)
 	CardCollection& deck = m_gameState->GetDeck();
 	CardCollection& hand = m_gameState->GetHand();
 	CardCollection& limbo = m_gameState->GetLimbo();
-	DiscardTracker& discard = m_gameState->GetDiscard();
+	CardCounter& discard = m_gameState->GetDiscard();
 	DoorProgress& doorProgress = m_gameState->GetDoorProgress();
 
 	LOG("");
 	LOG("starting draw cards step...");
 
 	const std::size_t kMaxHandSize = 5;
-	while (deck.Size() > 0 && hand.Size() < kMaxHandSize && !doorProgress.HasAllDoors() && !discard.DoorWasDiscarded())
+	while (deck.Size() > 0 && hand.Size() < kMaxHandSize && !doorProgress.HasAllDoors() && discard.Get(ECardType::Door) == 0)
 	{
 		Card card;
 		if (deck.RemoveFromTop(card))
@@ -166,7 +166,7 @@ void GameLogic::DrawCards(bool nonLocationCardsToLimbo)
 	}
 
 	// check for game over - a door was discarded
-	if (discard.DoorWasDiscarded())
+	if (discard.Get(ECardType::Door) > 0)
 	{
 		OnGameOver(EGameResult::Loss_DiscardedDoor);
 	}
@@ -211,7 +211,7 @@ void GameLogic::ResolveTurn()
 {
 	CardCollection& hand = m_gameState->GetHand();
 	CardCollection& labrynth = m_gameState->GetLabrynth();
-	DiscardTracker& discard = m_gameState->GetDiscard();
+	CardCounter& discard = m_gameState->GetDiscard();
 
 	LOG("");
 	LOG("starting player turn action...");
@@ -258,7 +258,7 @@ void GameLogic::ResolveTurn()
 			if (hand.RemoveFromIndex(choiceIndex, handCard))
 			{
 				LOG("discarded card: " + LogUtils::GetCardName(handCard));
-				discard.DiscardCard(handCard);
+				discard.Add(handCard);
 
 				// if we discarded a key, resolve a premonition
 				if (handCard.Type() == ECardType::Key)
@@ -281,7 +281,7 @@ void GameLogic::ResolveNightmareCard(const Card& card)
 	CardCollection& hand = m_gameState->GetHand();
 	CardCollection& deck = m_gameState->GetDeck();
 	CardCollection& limbo = m_gameState->GetLimbo();
-	DiscardTracker& discard = m_gameState->GetDiscard();
+	CardCounter& discard = m_gameState->GetDiscard();
 	DoorProgress& doorProgress = m_gameState->GetDoorProgress();
 
 	LOG("");
@@ -311,7 +311,7 @@ void GameLogic::ResolveNightmareCard(const Card& card)
 				else
 				{
 					LOG("limbo'd card: " + LogUtils::GetCardName(deckCard));
-					discard.DiscardCard(deckCard);
+					discard.Add(deckCard);
 				}
 			}
 		}
@@ -327,7 +327,7 @@ void GameLogic::ResolveNightmareCard(const Card& card)
 			if (hand.RemoveFromTop(handCard))
 			{
 				LOG("discarded card: " + LogUtils::GetCardName(handCard));
-				discard.DiscardCard(handCard);
+				discard.Add(handCard);
 			}
 		}
 	}
@@ -352,7 +352,7 @@ void GameLogic::ResolveNightmareCard(const Card& card)
 			if (hand.RemoveFromIndex(keyIt - hand.GetCards().begin(), handCard))
 			{
 				LOG("discarded card: " + LogUtils::GetCardName(handCard));
-				discard.DiscardCard(handCard);
+				discard.Add(handCard);
 			}
 		}
 		else
@@ -381,7 +381,7 @@ void GameLogic::ResolveNightmareCard(const Card& card)
 	}
 
 	// discard the nightmare card
-	discard.DiscardCard(card);
+	discard.Add(card);
 }
 
 // -------------------------------------------------------------------------------------------------
@@ -390,7 +390,7 @@ void GameLogic::ResolveDoorCard(const Card& card)
 {
 	CardCollection& hand = m_gameState->GetHand();
 	CardCollection& limbo = m_gameState->GetLimbo();
-	DiscardTracker& discard = m_gameState->GetDiscard();
+	CardCounter& discard = m_gameState->GetDiscard();
 	DoorProgress& doorProgress = m_gameState->GetDoorProgress();
 
 	// search for a matching key among the hand cards
@@ -423,7 +423,7 @@ void GameLogic::ResolveDoorCard(const Card& card)
 				if (hand.RemoveFromIndex(keyIt - hand.GetCards().begin(), handCard))
 				{
 					LOG("discarded card: " + LogUtils::GetCardName(handCard));
-					discard.DiscardCard(handCard);
+					discard.Add(handCard);
 
 					LOG("\ngained a " + LogUtils::GetColor(card.Color()) + " door!\n");
 					m_player.OnDoorModified(card.Color(), EDoorModification::Added);
@@ -451,7 +451,7 @@ void GameLogic::ResolveDoorCard(const Card& card)
 void GameLogic::ResolvePremonition()
 {
 	CardCollection& deck = m_gameState->GetDeck();
-	DiscardTracker& discard = m_gameState->GetDiscard();
+	CardCounter& discard = m_gameState->GetDiscard();
 
 	// read the top five cards from the deck
 	std::vector<Card> deckCards;
@@ -514,7 +514,7 @@ void GameLogic::ResolvePremonition()
 	}
 
 	// discard the last card we read
-	discard.DiscardCard(reordered[reordered.size() - 1]);
+	discard.Add(reordered[reordered.size() - 1]);
 	LOG("discarded card: " + LogUtils::GetCardName(reordered[reordered.size() - 1]));
 
 	// add the reordered cards back onto the top of the deck
@@ -597,7 +597,7 @@ void GameLogic::OnGameOver(EGameResult result)
 	LOG("doors:\n" + LogUtils::GetDoorState(m_gameState->GetDoorProgress()));
 	LOG("labrynth: " + LogUtils::GetCollectionContents(m_gameState->GetLabrynth(), true, true));
 	LOG("hand: " + LogUtils::GetCollectionContents(m_gameState->GetHand(), true, true));
-	LOG("discard:\n" + LogUtils::GetDiscardState(m_gameState->GetDiscard()));
+	LOG("discard:\n" + LogUtils::GetCardCounterState(m_gameState->GetDiscard()));
 	LOG("limbo: " + LogUtils::GetCollectionContents(m_gameState->GetLimbo(), true, true));
 	LOG("deck: " + LogUtils::GetCollectionContents(m_gameState->GetDeck(), true, true));
 

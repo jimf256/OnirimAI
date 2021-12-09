@@ -13,9 +13,6 @@
     <ClCompile Include="CardCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DiscardTracker.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DoorProgress.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -28,15 +25,15 @@
     <ClCompile Include="PublicGameState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CardCounter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\Card.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\CardCollection.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Headers\DiscardTracker.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\DoorProgress.h">
@@ -55,6 +52,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\PublicGameState.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\CardCounter.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
