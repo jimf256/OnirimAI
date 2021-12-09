@@ -3,5 +3,6 @@
 /Libraries/
 /Intermediate/
 .vs/
+__pycache__/
 
 *.log
