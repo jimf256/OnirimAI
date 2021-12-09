@@ -89,10 +89,7 @@ def RunGameInstance():
                     proc.kill()
                     break
 
-    while True:
-        if os.path.exists(game_over_signal) and os.path.isfile(game_over_signal):
-            break;
-    
+    proc.wait()    
     RemoveFile(cpp_file)
     RemoveFile(python_file)
     RemoveFile(cpp_waiting_signal)
