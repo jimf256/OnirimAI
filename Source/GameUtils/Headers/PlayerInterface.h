@@ -3,6 +3,7 @@
 #include "Card.h"
 #include <vector>
 
+class CardCollection;
 class PublicGameState;
 
 // -------------------------------------------------------------------------------------------------
@@ -12,9 +13,10 @@ class PlayerInterface
 public:
 	PlayerInterface() {}
 
-	virtual void GameOver(EGameResult result) = 0;
-	virtual void CardDrawn(const Card& card) = 0;
-	virtual void DoorModified(EColor color, bool added) = 0;
+	virtual void OnGameOver(EGameResult result) = 0;
+	virtual void OnCardDrawn(const Card& card) = 0;
+	virtual void OnLabrynthModified(const CardCollection& labrynth) = 0;
+	virtual void OnDoorModified(EColor color, EDoorModification modification) = 0;
 	virtual void ResolveTurnAction(const PublicGameState& state, ETurnAction& choice, std::size_t& handIndex) = 0;
 	virtual void ResolveNightmareCard(const PublicGameState& state, EResolveNightmareAction& choice, EColor& color) = 0;
 	virtual void ResolveDoorCard(const PublicGameState& state, const Card& doorCard, EResolveDoorAction& choice) = 0;

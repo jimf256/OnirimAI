@@ -8,24 +8,54 @@
 // -------------------------------------------------------------------------------------------------
 
 AIPlayer::AIPlayer()
+	: m_currentLabrynthColor(EColor::None)
+	, m_currentLabrynthType(ECardType::Door)
+	, m_currentLabrynthCount(0)
 {
 }
 
 // -------------------------------------------------------------------------------------------------
 
-void AIPlayer::GameOver(EGameResult result)
+void AIPlayer::OnGameOver(EGameResult result)
 {
 }
 
 // -------------------------------------------------------------------------------------------------
 
-void AIPlayer::CardDrawn(const Card& card)
+void AIPlayer::OnCardDrawn(const Card& card)
 {
 }
 
 // -------------------------------------------------------------------------------------------------
 
-void AIPlayer::DoorModified(EColor color, bool added)
+void AIPlayer::OnLabrynthModified(const CardCollection& labrynth)
+{
+	// update our cached data about the current active color in the labrynth
+	// find the last card in the labrynth (if any) and how many cards of the same color have been played before it
+	Card lastCard;
+	m_currentLabrynthCount = 0;
+
+	const std::vector<Card>& cards = labrynth.GetCards();
+	if (cards.size() > 0)
+	{
+		lastCard = *cards.rbegin();
+		for (auto it = cards.rbegin(); it != cards.rend(); ++it)
+		{
+			if (it->Color() != lastCard.Color())
+			{
+				break;
+			}
+			m_currentLabrynthCount++;
+		}
+	}
+
+	m_currentLabrynthColor = lastCard.Color();
+	m_currentLabrynthType = lastCard.Type();
+}
+
+// -------------------------------------------------------------------------------------------------
+
+void AIPlayer::OnDoorModified(EColor color, EDoorModification modification)
 {
 }
 
@@ -36,22 +66,6 @@ void AIPlayer::ResolveTurnAction(const PublicGameState& state, ETurnAction& choi
 	const std::vector<Card> hand = state.GetHand().GetCards();
 	const std::vector<Card>& labrynth = state.GetLabrynth().GetCards();
 
-	// find the last card in the labrynth (if any) and how many cards of the same color have been played
-	Card lastCard;
-	int colorCount = 0;
-	if (labrynth.size() > 0)
-	{
-		lastCard = *labrynth.rbegin();
-		for (auto it = labrynth.rbegin(); it != labrynth.rend(); ++it)
-		{
-			if (it->Color() != lastCard.Color())
-			{
-				break;
-			}
-			colorCount++;
-		}
-	}
-
 	// for the below: ignore colors for which we already have all doors
 	// 1. can we play a card to get a door right now (third in a series)?
 	// 2. can we play a sun/moon to get 2/3 of a color
@@ -60,12 +74,12 @@ void AIPlayer::ResolveTurnAction(const PublicGameState& state, ETurnAction& choi
 	// 5. discard a key
 
 	// check if we can play a card for an immediate door
-	if (colorCount % 3 == 2)
+	if (m_currentLabrynthCount % 3 == 2)
 	{
 		// find a card that matches the current color and has a different type
 		for (auto it = hand.begin(); it != hand.end(); ++it)
 		{
-			if (it->Color() == lastCard.Color() && it->Type() != lastCard.Type())
+			if (it->Color() == m_currentLabrynthColor && it->Type() != m_currentLabrynthType)
 			{
 				// play the card and return
 				handIndex = (it - hand.begin());
@@ -76,12 +90,12 @@ void AIPlayer::ResolveTurnAction(const PublicGameState& state, ETurnAction& choi
 	}
 
 	// check if we can play a sun/moon to get two of the same color in the labrynth (2/3 door)
-	if (colorCount % 3 == 1)
+	if (m_currentLabrynthCount % 3 == 1)
 	{
 		// find a card that matches the current color, has a different type, and is a sun or moon
 		for (auto it = hand.begin(); it != hand.end(); ++it)
 		{
-			if (it->Color() == lastCard.Color() && it->Type() != lastCard.Type() && it->Type() != ECardType::Key)
+			if (it->Color() == m_currentLabrynthColor && it->Type() != m_currentLabrynthType && it->Type() != ECardType::Key)
 			{
 				// play the card and return
 				handIndex = (it - hand.begin());
@@ -110,7 +124,7 @@ void AIPlayer::ResolveTurnAction(const PublicGameState& state, ETurnAction& choi
 	{
 		if (hasSun[*it] && hasMoon[*it])
 		{
-			ECardType type = (lastCard.Type() == ECardType::Sun) ? ECardType::Moon : ECardType::Sun;
+			ECardType type = (m_currentLabrynthType == ECardType::Sun) ? ECardType::Moon : ECardType::Sun;
 			for (auto it2 = hand.begin(); it2 != hand.end(); ++it2)
 			{
 				if (it2->Color() == *it && it2->Type() == type)

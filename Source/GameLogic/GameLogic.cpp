@@ -116,7 +116,7 @@ void GameLogic::DrawCards(bool nonLocationCardsToLimbo)
 		{
 			LOG("draw card: " + LogUtils::GetCardName(card));
 			m_gameState->UpdateDeckSize();
-			m_player.CardDrawn(card);
+			m_player.OnCardDrawn(card);
 
 			if (nonLocationCardsToLimbo)
 			{
@@ -246,6 +246,8 @@ void GameLogic::ResolveTurn()
 					LOG("played card: " + LogUtils::GetCardName(handCard));
 					labrynth.AddToBottom(handCard);
 					CheckForLabrynthDoor();
+
+					m_player.OnLabrynthModified(m_gameState->GetLabrynth());
 				}
 			}
 		}
@@ -367,7 +369,7 @@ void GameLogic::ResolveNightmareCard(const Card& card)
 		if (doorProgress.CountDoors(choiceColor) > 0)
 		{
 			LOG("\nlost a " + LogUtils::GetColor(choiceColor) + " door!\n");
-			m_player.DoorModified(choiceColor, false);
+			m_player.OnDoorModified(choiceColor, EDoorModification::Removed);
 
 			doorProgress.RemoveDoor(choiceColor);
 			limbo.AddToTop(Card(choiceColor, ECardType::Door));
@@ -424,7 +426,7 @@ void GameLogic::ResolveDoorCard(const Card& card)
 					discard.DiscardCard(handCard);
 
 					LOG("\ngained a " + LogUtils::GetColor(card.Color()) + " door!\n");
-					m_player.DoorModified(card.Color(), true);
+					m_player.OnDoorModified(card.Color(), EDoorModification::Added);
 					doorProgress.AddDoor(card.Color());
 				}
 			}
@@ -530,35 +532,23 @@ void GameLogic::ResolvePremonition()
 void GameLogic::CheckForLabrynthDoor()
 {
 	CardCollection& deck = m_gameState->GetDeck();
-	CardCollection& labrynth = m_gameState->GetLabrynth();
+	const std::vector<Card>& labrynth = m_gameState->GetLabrynth().GetCards();
 	DoorProgress& doorProgress = m_gameState->GetDoorProgress();
 
 	// find how many cards of the same color are currently at the bottom of the labrynth (in a row)
 	EColor color = EColor::None;
 	int count = 0;
-	for (std::size_t i = 0; i < labrynth.Size(); ++i)
+	for (auto it = labrynth.rbegin(); it != labrynth.rend(); ++it)
 	{
-		std::size_t index = labrynth.Size() - i - 1;
-		Card card;
-		if (labrynth.GetAtIndex(index, card))
+		if (color == EColor::None)
 		{
-			if (i == 0)
-			{
-				color = card.Color();
-				count = 1;
-			}
-			else
-			{
-				if (card.Color() != color)
-				{
-					break;
-				}
-				else
-				{
-					count++;
-				}
-			}
+			color = it->Color();
 		}
+		else if (it->Color() != color)
+		{
+			break;
+		}
+		count++;
 	}
 
 	// if there is a multiple of three, we unlock a door, remove it from the deck and shuffle the deck
@@ -566,7 +556,7 @@ void GameLogic::CheckForLabrynthDoor()
 	{
 		if (doorProgress.HasAllDoors(color) == false)
 		{
-			m_player.DoorModified(color, true);
+			m_player.OnDoorModified(color, EDoorModification::Added);
 			LOG("\ngained a " + LogUtils::GetColor(color) + " door!\n");
 
 			doorProgress.AddDoor(color);
@@ -599,7 +589,7 @@ void GameLogic::OnGameOver(EGameResult result)
 {
 	m_result = result;
 	m_inProgress = false;
-	m_player.GameOver(result);
+	m_player.OnGameOver(result);
 
 	// print end-of-game state to the log
 	LOG("\n\n::: game ended :::\n");

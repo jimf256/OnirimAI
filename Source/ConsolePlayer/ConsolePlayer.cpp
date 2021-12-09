@@ -13,7 +13,7 @@ ConsolePlayer::ConsolePlayer()
 
 // -------------------------------------------------------------------------------------------------
 
-void ConsolePlayer::GameOver(EGameResult result)
+void ConsolePlayer::OnGameOver(EGameResult result)
 {
 	std::cout << "\n::: GAME OVER :::\n";
 	std::cout << "You " << LogUtils::GetGameResult(result) << "\n\n";
@@ -22,16 +22,23 @@ void ConsolePlayer::GameOver(EGameResult result)
 
 // -------------------------------------------------------------------------------------------------
 
-void ConsolePlayer::CardDrawn(const Card& card)
+void ConsolePlayer::OnCardDrawn(const Card& card)
 {
 	std::cout << "draw card: " << LogUtils::GetCardName(card) << "\n";
 }
 
 // -------------------------------------------------------------------------------------------------
 
-void ConsolePlayer::DoorModified(EColor color, bool added)
+void ConsolePlayer::OnLabrynthModified(const CardCollection& labrynth)
 {
-	std::cout << "door (" << LogUtils::GetColor(color) << ") was " << (added ? "UNLOCKED!" : "LOST!") << "\n";
+}
+
+// -------------------------------------------------------------------------------------------------
+
+void ConsolePlayer::OnDoorModified(EColor color, EDoorModification modification)
+{
+	std::cout << "door (" << LogUtils::GetColor(color) << ") was " 
+		<< (modification == EDoorModification::Added ? "ADDED!" : "LOST!") << "\n";
 }
 
 // -------------------------------------------------------------------------------------------------
