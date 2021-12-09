@@ -5,6 +5,7 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConsolePlayer", "ConsolePlayer\ConsolePlayer.vcxproj", "{871CD363-48EE-48EB-A18D-20F729943EEE}"
 	ProjectSection(ProjectDependencies) = postProject
+		{21497A0E-0680-4A31-8E3F-B6A4194C57AA} = {21497A0E-0680-4A31-8E3F-B6A4194C57AA}
 		{D987764D-B837-4DE4-8526-D7974F50F82A} = {D987764D-B837-4DE4-8526-D7974F50F82A}
 	EndProjectSection
 EndProject
@@ -17,6 +18,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameUtils", "GameUtils\Game
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AIPlayer", "AIPlayer\AIPlayer.vcxproj", "{45F42EEC-20C6-45D6-B38E-E43DE5002B4F}"
 	ProjectSection(ProjectDependencies) = postProject
+		{21497A0E-0680-4A31-8E3F-B6A4194C57AA} = {21497A0E-0680-4A31-8E3F-B6A4194C57AA}
+		{D987764D-B837-4DE4-8526-D7974F50F82A} = {D987764D-B837-4DE4-8526-D7974F50F82A}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PlayerTemplate", "PlayerTemplate\PlayerTemplate.vcxproj", "{6ACA50E3-DCDF-416A-9BA0-0E073A77D454}"
+	ProjectSection(ProjectDependencies) = postProject
+		{21497A0E-0680-4A31-8E3F-B6A4194C57AA} = {21497A0E-0680-4A31-8E3F-B6A4194C57AA}
 		{D987764D-B837-4DE4-8526-D7974F50F82A} = {D987764D-B837-4DE4-8526-D7974F50F82A}
 	EndProjectSection
 EndProject
@@ -78,6 +86,18 @@ Global
 		{45F42EEC-20C6-45D6-B38E-E43DE5002B4F}.Release|x64.Build.0 = Release|x64
 		{45F42EEC-20C6-45D6-B38E-E43DE5002B4F}.Release|x86.ActiveCfg = Release|Win32
 		{45F42EEC-20C6-45D6-B38E-E43DE5002B4F}.Release|x86.Build.0 = Release|Win32
+		{6ACA50E3-DCDF-416A-9BA0-0E073A77D454}.Debug_NoLogging|x64.ActiveCfg = Debug|x64
+		{6ACA50E3-DCDF-416A-9BA0-0E073A77D454}.Debug_NoLogging|x64.Build.0 = Debug|x64
+		{6ACA50E3-DCDF-416A-9BA0-0E073A77D454}.Debug_NoLogging|x86.ActiveCfg = Debug|Win32
+		{6ACA50E3-DCDF-416A-9BA0-0E073A77D454}.Debug_NoLogging|x86.Build.0 = Debug|Win32
+		{6ACA50E3-DCDF-416A-9BA0-0E073A77D454}.Debug|x64.ActiveCfg = Debug|x64
+		{6ACA50E3-DCDF-416A-9BA0-0E073A77D454}.Debug|x64.Build.0 = Debug|x64
+		{6ACA50E3-DCDF-416A-9BA0-0E073A77D454}.Debug|x86.ActiveCfg = Debug|Win32
+		{6ACA50E3-DCDF-416A-9BA0-0E073A77D454}.Debug|x86.Build.0 = Debug|Win32
+		{6ACA50E3-DCDF-416A-9BA0-0E073A77D454}.Release|x64.ActiveCfg = Release|x64
+		{6ACA50E3-DCDF-416A-9BA0-0E073A77D454}.Release|x64.Build.0 = Release|x64
+		{6ACA50E3-DCDF-416A-9BA0-0E073A77D454}.Release|x86.ActiveCfg = Release|Win32
+		{6ACA50E3-DCDF-416A-9BA0-0E073A77D454}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
