@@ -2,18 +2,21 @@
 #include "Card.h"
 #include "PlayerInterface.h"
 #include "InternalGameState.h"
-#include "Logging.h"
 #include "LogUtils.h"
 #include <unordered_map>
 #include <cassert>
 
 // -------------------------------------------------------------------------------------------------
 
-GameLogic::GameLogic(PlayerInterface& player)
+GameLogic::GameLogic(PlayerInterface& player, Logging::PlatformLogHook logHook)
 	: m_inProgress(false)
 	, m_result(EGameResult::Unknown)
 	, m_player(player)
 {
+	// initialize the log system
+	Logging::Initialize("debug.log", logHook);
+
+	// create the game state
 	m_gameState.reset(new InternalGameState());
 }
 
@@ -27,8 +30,6 @@ GameLogic::~GameLogic()
 
 void GameLogic::Run()
 {
-	m_inProgress = true;
-
 	// create the deck
 	InitializeDeck();
 
@@ -36,6 +37,7 @@ void GameLogic::Run()
 	DrawCards(true);
 	ShuffleLimboCards();
 
+	m_inProgress = true;
 	while (m_inProgress)
 	{
 		ResolveTurn();

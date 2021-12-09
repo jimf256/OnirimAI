@@ -16,12 +16,18 @@
     <ClCompile Include="EntryPoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Logging.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameLogic.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="InternalGameState.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Logging.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

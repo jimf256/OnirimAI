@@ -1,6 +1,5 @@
 #include "AIPlayer.h"
 #include "PublicGameState.h"
-#include "Logging.h"
 #include "LogUtils.h"
 #include <iostream>
 #include <unordered_map>

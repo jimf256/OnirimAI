@@ -16,9 +16,6 @@
     <ClCompile Include="DoorProgress.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Logging.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LogUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -40,9 +37,6 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\Enums.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Headers\Logging.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\LogUtils.h">

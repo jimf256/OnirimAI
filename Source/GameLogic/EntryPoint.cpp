@@ -38,13 +38,6 @@ bool LoadPlayerLibrary(std::string moduleName)
 
 int main(int argc, char* argv[])
 {
-	// initialize the log system
-	auto logLambda = [](const std::string& str)
-	{
-		OutputDebugStringA(str.c_str());
-	};
-	Logging::Initialize("debug.log", logLambda);
-
 	// read the player module name from the commandline
 	std::string playerModuleName = "";
 	if (argc > 1)
@@ -58,7 +51,8 @@ int main(int argc, char* argv[])
 		PlayerInterface* player = g_createPlayer();
 		if (player != nullptr)
 		{
-			GameLogic logic(*player);
+			auto logLambda = [](const std::string& str) { OutputDebugStringA(str.c_str()); };
+			GameLogic logic(*player, logLambda);
 			logic.Run();
 			g_destroyPlayer(player);
 

@@ -71,7 +71,6 @@
     <ClCompile Include="CardCollection.cpp" />
     <ClCompile Include="CardCounter.cpp" />
     <ClCompile Include="DoorProgress.cpp" />
-    <ClCompile Include="Logging.cpp" />
     <ClCompile Include="LogUtils.cpp" />
     <ClCompile Include="PublicGameState.cpp" />
   </ItemGroup>
@@ -81,7 +80,6 @@
     <ClInclude Include="Headers\CardCounter.h" />
     <ClInclude Include="Headers\DoorProgress.h" />
     <ClInclude Include="Headers\Enums.h" />
-    <ClInclude Include="Headers\Logging.h" />
     <ClInclude Include="Headers\LogUtils.h" />
     <ClInclude Include="Headers\PlayerInterface.h" />
     <ClInclude Include="Headers\PublicGameState.h" />

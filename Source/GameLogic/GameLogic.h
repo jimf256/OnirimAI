@@ -1,5 +1,6 @@
 #pragma once
 #include "Enums.h"
+#include "Logging.h"
 #include <memory>
 
 class Card;
@@ -12,7 +13,7 @@ class PublicGameState;
 class GameLogic
 {
 public:
-	GameLogic(PlayerInterface& player);
+	GameLogic(PlayerInterface& player, Logging::PlatformLogHook logHook);
 	~GameLogic();
 
 	void Run();
