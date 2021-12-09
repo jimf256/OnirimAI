@@ -9,7 +9,7 @@ public:
 	InternalGameState();
 	virtual ~InternalGameState();
 
-	// accessors for game logic
+	// return references for game logic use
 	CardCollection& GetDeck() { return m_deck; }
 	CardCollection& GetHand() { return m_hand; }
 	CardCollection& GetLimbo() { return m_limbo; }

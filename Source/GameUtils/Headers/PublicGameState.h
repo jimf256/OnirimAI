@@ -11,7 +11,7 @@ public:
 	PublicGameState();
 	virtual ~PublicGameState() = 0;
 
-	// return copies
+	// return const references
 	const CardCollection& GetHand() const { return m_hand; }
 	const CardCollection& GetLimbo() const { return m_limbo; }
 	const CardCollection& GetLabrynth() const { return m_labrynth; }

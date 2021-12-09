@@ -218,10 +218,11 @@ void GameLogic::ResolveTurn()
 	LOG("Hand Contents:");
 	LOG(LogUtils::GetCollectionContents(hand, false, false));
 
-	// query player
+	// query player - player code is passed a copy of the gamestate to prevent cheating
 	ETurnAction choice = ETurnAction::PlayCard;
 	std::size_t choiceIndex = 0;
-	m_player.ResolveTurnAction(*m_gameState, choice, choiceIndex);
+	std::unique_ptr<InternalGameState> copy(new InternalGameState(*m_gameState.get()));
+	m_player.ResolveTurnAction(*copy, choice, choiceIndex);
 
 	LOG("");
 	assert(hand.Size() > 0);
@@ -287,10 +288,11 @@ void GameLogic::ResolveNightmareCard(const Card& card)
 	LOG("");
 	LOG("resolving nightmare card...");
 
-	// query player
+	// query player - player code is passed a copy of the gamestate to prevent cheating
 	EResolveNightmareAction choice = EResolveNightmareAction::DiscardDeck;
 	EColor choiceColor = EColor::None;
-	m_player.ResolveNightmareCard(*m_gameState, choice, choiceColor);
+	std::unique_ptr<InternalGameState> copy(new InternalGameState(*m_gameState.get()));
+	m_player.ResolveNightmareCard(*copy, choice, choiceColor);
 
 	if (choice == EResolveNightmareAction::DiscardDeck)
 	{
@@ -409,9 +411,10 @@ void GameLogic::ResolveDoorCard(const Card& card)
 		LOG("");
 		LOG("resolving door card...");
 
-		// query player
+		// query player - player code is passed a copy of the gamestate to prevent cheating
 		EResolveDoorAction choice = EResolveDoorAction::DiscardKeyCard;
-		m_player.ResolveDoorCard(*m_gameState, card, choice);
+		std::unique_ptr<InternalGameState> copy(new InternalGameState(*m_gameState.get()));
+		m_player.ResolveDoorCard(*copy, card, choice);
 
 		if (choice == EResolveDoorAction::DiscardKeyCard)
 		{
@@ -473,10 +476,11 @@ void GameLogic::ResolvePremonition()
 	LOG("");
 	LOG("resolving premonition...");
 
-	// query player
+	// query player - player code is passed a copy of the gamestate to prevent cheating
 	std::size_t choiceIndex = 0;
 	std::vector<Card> reordered = deckCards;
-	m_player.ResolvePremonition(*m_gameState, reordered);
+	std::unique_ptr<InternalGameState> copy(new InternalGameState(*m_gameState.get()));
+	m_player.ResolvePremonition(*copy, reordered);
 
 	// validate reordered vector contains the same cards
 	assert(reordered.size() == deckCards.size());
