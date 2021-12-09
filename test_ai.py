@@ -1,17 +1,27 @@
-import subprocess
+import multiprocessing, subprocess, time
 
-run_count = int(input('run count: '))
-
-results = {'win': 0, 'loss': 0}
-for i in range(run_count):
+def RunSingleProcess():
     result = subprocess.run('Binaries\Onirim.exe AIPlayer', shell=True)
-    if result.returncode == 1:
-        results['win'] += 1
-    else:
-        results['loss'] += 1
+    return result.returncode
 
-print('')
-print(f'wins: {results["win"]}')
-print(f'losses: {results["loss"]}')
-print(f'win rate: {(results["win"]/run_count)*100:.2f}%')
-input('finished')
+def RunAllProcesses(run_count):
+    results = []
+    with multiprocessing.Pool(processes=8) as pool:
+        for i in range(run_count):
+            pool.apply_async(RunSingleProcess, callback=lambda x: results.append(x))
+        while len(results) < run_count:
+            time.sleep(0.1)
+    return results
+
+if __name__ == '__main__':
+    runs = int(input('run count: '))
+    t = time.monotonic()
+    results = RunAllProcesses(runs)
+    
+    wins = results.count(1)
+    print('')
+    print(f'played: {len(results)}')
+    print(f'wins: {wins}')
+    print(f'losses: {len(results) - wins}')
+    print(f'win rate: {(wins/len(results))*100:.2f}%')
+    input(f'\nfinished in {time.monotonic() - t:.2f} seconds')
