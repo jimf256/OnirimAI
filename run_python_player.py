@@ -45,49 +45,52 @@ def RunGameInstance():
     RemoveFile(event_started_signal)
     RemoveFile(event_completed_signal)
     RemoveFile(game_over_signal)
-    
+
     proc = subprocess.Popen('Binaries\Onirim_d.exe PythonPlayer', shell=True)
-    finished = False
-    while not finished:
-        while True:
-            if os.path.exists(event_started_signal) and os.path.isfile(event_started_signal):
-                RemoveFile(event_completed_signal)
-                CreateFile(python_waiting_signal)
-                break
-        while True:
-            if os.path.exists(cpp_waiting_signal) and os.path.isfile(cpp_waiting_signal):
-                if os.path.exists(cpp_file) and os.path.isfile(cpp_file):
-                    with open(cpp_file, 'r') as f:
-                        data = f.readlines();
-                        if not data:
-                            finished = True
-                            print('empty data received')
-                            proc.kill()
-                            break
-                        elif data[0].strip() == 'ResolveTurn':
-                            ResolveTurn(data)
-                        elif data[0].strip() == 'ResolveNightmare':
-                            ResolveNightmare(data)
-                        elif data[0].strip() == 'ResolveDoorCard':
-                            ResolveDoorCard(data)
-                        elif data[0].strip() == 'ResolvePremonition':
-                            ResolvePremonition(data)
-                        elif data[0].strip() == 'OnGameOver':
-                            OnGameEnded(data)
-                            finished = True
-                        else:
-                            finished = True
-                            print(f'invalid data received:\n{data}')
-                            proc.kill()
-                            break
-                    RemoveFile(python_waiting_signal)
-                    CreateFile(event_completed_signal)
+    try:
+        finished = False
+        while not finished:
+            while True:
+                if os.path.exists(event_started_signal) and os.path.isfile(event_started_signal):
+                    RemoveFile(event_completed_signal)
+                    CreateFile(python_waiting_signal)
                     break
-                else:
-                    finished = True
-                    print('failed to open cpp data file')
-                    proc.kill()
-                    break
+            while True:
+                if os.path.exists(cpp_waiting_signal) and os.path.isfile(cpp_waiting_signal):
+                    if os.path.exists(cpp_file) and os.path.isfile(cpp_file):
+                        with open(cpp_file, 'r') as f:
+                            data = f.readlines();
+                            if not data:
+                                finished = True
+                                print('empty data received')
+                                proc.kill()
+                                break
+                            elif data[0].strip() == 'ResolveTurn':
+                                ResolveTurn(data[1:])
+                            elif data[0].strip() == 'ResolveNightmare':
+                                ResolveNightmare(data[1:])
+                            elif data[0].strip() == 'ResolveDoorCard':
+                                ResolveDoorCard(data[1:])
+                            elif data[0].strip() == 'ResolvePremonition':
+                                ResolvePremonition(data[1:])
+                            elif data[0].strip() == 'OnGameOver':
+                                OnGameEnded(data[1:])
+                                finished = True
+                            else:
+                                finished = True
+                                print(f'invalid data received:\n{data}')
+                                proc.kill()
+                                break
+                        RemoveFile(python_waiting_signal)
+                        CreateFile(event_completed_signal)
+                        break
+                    else:
+                        finished = True
+                        print('failed to open cpp data file')
+                        proc.kill()
+                        break
+    except:
+        proc.kill()        
 
     proc.wait()    
     RemoveFile(cpp_file)

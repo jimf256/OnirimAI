@@ -106,7 +106,7 @@ void PythonPlayer::OnGameOver(EGameResult result)
 	std::stringstream sstream;
 	sstream << "OnGameOver\n" << LogUtils::GetGameResult(result);
 	ExchangeData(sstream);
-	std::cout << "python sent: " << sstream.rdbuf() << "\n";
+	//std::cout << "python sent: " << sstream.rdbuf() << "\n";
 
 	CreateSignalFile(kGameOverSignalFilename);
 }
