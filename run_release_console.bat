@@ -1,2 +1,2 @@
 @echo off
-start Binaries\Onirim.exe ConsolePlayer
+Binaries\Onirim.exe ConsolePlayer
