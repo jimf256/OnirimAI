@@ -17,6 +17,8 @@ namespace Logging
 	typedef std::function<void(const std::string&)> PlatformLogHook;
 
 	void Initialize(const std::string& filename, PlatformLogHook platformHook = nullptr);
+	void ShutDown();
+
 	void Write(const std::string& text);
 }
 

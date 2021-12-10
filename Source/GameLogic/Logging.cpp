@@ -33,6 +33,21 @@ void Logging::Initialize(const std::string& filename, PlatformLogHook platformHo
 
 // -------------------------------------------------------------------------------------------------
 
+void Logging::ShutDown()
+{
+#if LOGGING_ENABLED
+
+	if (g_logfile.is_open())
+	{
+		g_logfile.flush();
+		g_logfile.close();
+	}
+
+#endif
+}
+
+// -------------------------------------------------------------------------------------------------
+
 void Logging::Write(const std::string& text)
 {
 #if LOGGING_ENABLED

@@ -24,6 +24,8 @@ GameLogic::GameLogic(PlayerInterface& player, Logging::PlatformLogHook logHook)
 
 GameLogic::~GameLogic()
 {
+	// shut down the log system (close the file)
+	Logging::ShutDown();
 }
 
 // -------------------------------------------------------------------------------------------------
