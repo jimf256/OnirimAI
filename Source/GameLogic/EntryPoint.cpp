@@ -70,6 +70,7 @@ int main(int argc, char* argv[])
 	}
 
 	// load the player dll
+	int returnCode = 0;
 	if (LoadPlayerLibrary(playerModuleName))
 	{
 		// read how many runs of the game logic to do from the commandline
@@ -95,8 +96,13 @@ int main(int argc, char* argv[])
 				logic.Run();
 				g_destroyPlayer(player);
 
-				// store the game result
+				// if we were only running a single run we also return the result as the return code, as
+				// well as caching it to the results log file
 				results[logic.GetResult()] += 1;
+				if (runs == 1)
+				{
+					returnCode = static_cast<int>(logic.GetResult());
+				}
 			}
 			else
 			{
@@ -126,7 +132,7 @@ int main(int argc, char* argv[])
 		system("pause");
 	}
 
-	return 0;
+	return returnCode;
 }
 
 // -------------------------------------------------------------------------------------------------
