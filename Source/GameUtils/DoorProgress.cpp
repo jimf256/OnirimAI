@@ -6,6 +6,7 @@
 DoorProgress::DoorProgress(int keysPerColor)
 	: m_doorsRequired(keysPerColor)
 {
+	memset(m_doors.data(), 0, m_doors.size());
 }
 
 // -------------------------------------------------------------------------------------------------
