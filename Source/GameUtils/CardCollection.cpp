@@ -1,4 +1,5 @@
 #include "CardCollection.h"
+#include "Random.h"
 #include <algorithm>
 #include <random>
 #include <cassert>
@@ -93,7 +94,7 @@ bool CardCollection::RemoveFromBottom(Card& card)
 
 void CardCollection::Shuffle()
 {
-	std::shuffle(m_cards.begin(), m_cards.end(), std::random_device());
+	std::shuffle(m_cards.begin(), m_cards.end(), Random::GetRandomNumberEngine());
 }
 
 // -------------------------------------------------------------------------------------------------

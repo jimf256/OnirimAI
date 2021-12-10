@@ -73,6 +73,7 @@
     <ClCompile Include="DoorProgress.cpp" />
     <ClCompile Include="LogUtils.cpp" />
     <ClCompile Include="PublicGameState.cpp" />
+    <ClCompile Include="Random.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\Card.h" />
@@ -83,6 +84,7 @@
     <ClInclude Include="Headers\LogUtils.h" />
     <ClInclude Include="Headers\PlayerInterface.h" />
     <ClInclude Include="Headers\PublicGameState.h" />
+    <ClInclude Include="Headers\Random.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
