@@ -1,10 +1,14 @@
-#include <iostream>
 #include "GameLogic.h"
+#include "Enums.h"
 #include "PlayerInterface.h"
 #include "Logging.h"
+#include "LogUtils.h"
 #include "CommandLine.h"
 #include "Random.h"
+#include <iostream>
+#include <fstream>
 #include <string>
+#include <map>
 #include <cassert>
 
 #define WIN32_LEAN_AND_MEAN
@@ -60,25 +64,60 @@ int main(int argc, char* argv[])
 	{
 		Random::SetSeed(randomSeed);
 	}
+	else
+	{
+		Random::SetNonDeterministicSeed();
+	}
 
-	// attempt to create a player instance then start game logic
+	// load the player dll
 	if (LoadPlayerLibrary(playerModuleName))
 	{
-		PlayerInterface* player = g_createPlayer();
-		if (player != nullptr)
+		// read how many runs of the game logic to do from the commandline
+		int runs = 1;
+		if (CommandLine::FindValue("runs", runs) && runs < 1)
 		{
-			auto logLambda = [](const std::string& str) { OutputDebugStringA(str.c_str()); };
-			GameLogic logic(*player, logLambda);
-			logic.Run();
-			g_destroyPlayer(player);
-
-			// return the game result as the exit code
-			return static_cast<int>(logic.GetResult());
+			runs = 1;
 		}
-		else
+
+		std::cout << "using player library: " << playerModuleName << "\n";
+		std::cout << "running the game " << runs << ((runs > 1) ? " times" : " time") << "\n\n";
+
+		// run multiple times and cache the results
+		std::map<EGameResult, int> results;
+		for (int i = 0; i < runs; ++i)
 		{
-			std::cout << "failed to create player instance\n";
-			system("pause");
+			PlayerInterface* player = g_createPlayer();
+			if (player != nullptr)
+			{
+				// create and run the game logic
+				auto logLambda = [](const std::string& str) { OutputDebugStringA(str.c_str()); };
+				GameLogic logic(*player, logLambda);
+				logic.Run();
+				g_destroyPlayer(player);
+
+				// store the game result
+				results[logic.GetResult()] += 1;
+			}
+			else
+			{
+				std::cout << "failed to create player instance\n";
+				system("pause");
+				break;
+			}
+		}
+
+		// save the results to file and print them to the console
+		const std::string kResultsFileName = "results.log";
+		std::ofstream resultsFile(kResultsFileName);
+		if (resultsFile.is_open())
+		{
+			for (auto it = results.begin(); it != results.end(); ++it)
+			{
+				resultsFile << static_cast<int>(it->first) << ": " << it->second << "\n";
+				std::cout << LogUtils::GetGameResult(it->first) << ": " << it->second << "\n";
+			}
+			resultsFile.flush();
+			resultsFile.close();
 		}
 	}
 	else

@@ -17,6 +17,13 @@ void Random::SetSeed(int seed)
 
 // -------------------------------------------------------------------------------------------------
 
+void Random::SetNonDeterministicSeed()
+{
+	g_generator.seed(std::random_device()());
+}
+
+// -------------------------------------------------------------------------------------------------
+
 std::mt19937& Random::GetRandomNumberEngine()
 {
 	return g_generator;
