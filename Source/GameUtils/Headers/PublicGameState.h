@@ -9,7 +9,7 @@ class PublicGameState
 {
 public:
 	PublicGameState();
-	virtual ~PublicGameState() = 0;
+	virtual ~PublicGameState();
 
 	// return const references
 	const CardCollection& GetHand() const { return m_hand; }
