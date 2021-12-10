@@ -2,17 +2,23 @@
 #include "GameLogic.h"
 #include "PlayerInterface.h"
 #include "Logging.h"
-#include <Windows.h>
+#include "CommandLine.h"
+#include "Random.h"
 #include <string>
 #include <cassert>
 
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
+
 // -------------------------------------------------------------------------------------------------
 
+// define function pointer types for the player dll functions
 typedef PlayerInterface* (*CreatePlayerFunc)();
 typedef void (*DestroyPlayerFunc)(PlayerInterface*);
+static CreatePlayerFunc g_createPlayer = nullptr;
+static DestroyPlayerFunc g_destroyPlayer = nullptr;
 
-CreatePlayerFunc g_createPlayer = nullptr;
-DestroyPlayerFunc g_destroyPlayer = nullptr;
+// -------------------------------------------------------------------------------------------------
 
 bool LoadPlayerLibrary(std::string moduleName)
 {
@@ -38,11 +44,21 @@ bool LoadPlayerLibrary(std::string moduleName)
 
 int main(int argc, char* argv[])
 {
+	CommandLine::Set(argc, argv);
+
 	// read the player module name from the commandline
 	std::string playerModuleName = "";
-	if (argc > 1)
+	if (CommandLine::GetNumArgs() > 1)
 	{
-		playerModuleName = argv[1];
+		playerModuleName = CommandLine::GetArg(1);
+	}
+
+	// set the random seed from the commandline
+	// if not specified it will use a non-deterministic seed
+	int randomSeed = 0;
+	if (CommandLine::FindValue("seed", randomSeed))
+	{
+		Random::SetSeed(randomSeed);
 	}
 
 	// attempt to create a player instance then start game logic

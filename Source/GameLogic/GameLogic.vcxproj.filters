@@ -19,6 +19,9 @@
     <ClCompile Include="Logging.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CommandLine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameLogic.h">
@@ -28,6 +31,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Logging.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandLine.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

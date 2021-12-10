@@ -27,12 +27,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CommandLine.cpp" />
     <ClCompile Include="EntryPoint.cpp" />
     <ClCompile Include="GameLogic.cpp" />
     <ClCompile Include="InternalGameState.cpp" />
     <ClCompile Include="Logging.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CommandLine.h" />
     <ClInclude Include="GameLogic.h" />
     <ClInclude Include="InternalGameState.h" />
     <ClInclude Include="Logging.h" />
