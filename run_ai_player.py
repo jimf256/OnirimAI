@@ -3,7 +3,9 @@ import subprocess, time
 if __name__ == '__main__':
     runs = int(input('run count: '))
     t = time.monotonic()
-    proc = subprocess.run(f'Binaries\Onirim.exe AIPlayer runs={runs}', shell=True)
+    devnull = subprocess.DEVNULL
+    command = f'Binaries\Onirim.exe AIPlayer runs={runs}'
+    proc = subprocess.run(command, stdin=devnull, stdout=devnull, stderr=devnull, shell=False)
 
     results = {}
     with open('results.log', 'r') as f:
