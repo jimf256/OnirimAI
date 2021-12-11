@@ -47,7 +47,7 @@ def RunGameInstance():
     RemoveFile(game_over_signal)
 
     devnull = subprocess.DEVNULL
-    proc = subprocess.Popen('Binaries\Onirim_d.exe PythonPlayer', stdin=devnull, stdout=devnull, stderr=devnull, shell=False)
+    proc = subprocess.Popen('Binaries\Onirim.exe PythonPlayer', stdin=devnull, stdout=devnull, stderr=devnull, shell=False)
     try:
         finished = False
         while not finished:
