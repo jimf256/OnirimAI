@@ -37,7 +37,7 @@ def ResolvePremonition(data):
 def OnGameEnded(data):
     python_ai_logic.HandleGameEnded(data)
 
-def RunGameInstance():
+def RunGameInstances(runs):
     RemoveFile(cpp_file)
     RemoveFile(python_file)
     RemoveFile(cpp_waiting_signal)
@@ -47,49 +47,53 @@ def RunGameInstance():
     RemoveFile(game_over_signal)
 
     devnull = subprocess.DEVNULL
-    proc = subprocess.Popen('Binaries\Onirim.exe PythonPlayer', stdin=devnull, stdout=devnull, stderr=devnull, shell=False)
+    command = f'Binaries\Onirim.exe PythonPlayer runs={runs}'
+    proc = subprocess.Popen(command, stdin=devnull, stdout=devnull, stderr=devnull, shell=False)
+    runs_completed = 0
     try:
-        finished = False
-        while not finished:
-            while True:
-                if os.path.exists(event_started_signal) and os.path.isfile(event_started_signal):
-                    RemoveFile(event_completed_signal)
-                    CreateFile(python_waiting_signal)
-                    break
-            while True:
-                if os.path.exists(cpp_waiting_signal) and os.path.isfile(cpp_waiting_signal):
-                    if os.path.exists(cpp_file) and os.path.isfile(cpp_file):
-                        with open(cpp_file, 'r') as f:
-                            data = f.readlines();
-                            if not data:
-                                finished = True
-                                print('empty data received')
-                                proc.kill()
-                                break
-                            elif data[0].strip() == 'ResolveTurn':
-                                ResolveTurn(data[1:])
-                            elif data[0].strip() == 'ResolveNightmare':
-                                ResolveNightmare(data[1:])
-                            elif data[0].strip() == 'ResolveDoorCard':
-                                ResolveDoorCard(data[1:])
-                            elif data[0].strip() == 'ResolvePremonition':
-                                ResolvePremonition(data[1:])
-                            elif data[0].strip() == 'OnGameOver':
-                                OnGameEnded(data[1:])
-                                finished = True
-                            else:
-                                finished = True
-                                print(f'invalid data received:\n{data}')
-                                proc.kill()
-                                break
-                        RemoveFile(python_waiting_signal)
-                        CreateFile(event_completed_signal)
+        while proc.poll() is None and runs_completed < runs:
+            finished = False
+            while not finished:
+                while True:
+                    if os.path.exists(event_started_signal) and os.path.isfile(event_started_signal):
+                        RemoveFile(event_completed_signal)
+                        CreateFile(python_waiting_signal)
                         break
-                    else:
-                        finished = True
-                        print('failed to open cpp data file')
-                        proc.kill()
-                        break
+                while True:
+                    if os.path.exists(cpp_waiting_signal) and os.path.isfile(cpp_waiting_signal):
+                        if os.path.exists(cpp_file) and os.path.isfile(cpp_file):
+                            with open(cpp_file, 'r') as f:
+                                data = f.readlines();
+                                if not data:
+                                    finished = True
+                                    print('empty data received')
+                                    proc.kill()
+                                    break
+                                elif data[0].strip() == 'ResolveTurn':
+                                    ResolveTurn(data[1:])
+                                elif data[0].strip() == 'ResolveNightmare':
+                                    ResolveNightmare(data[1:])
+                                elif data[0].strip() == 'ResolveDoorCard':
+                                    ResolveDoorCard(data[1:])
+                                elif data[0].strip() == 'ResolvePremonition':
+                                    ResolvePremonition(data[1:])
+                                elif data[0].strip() == 'OnGameOver':
+                                    OnGameEnded(data[1:])
+                                    finished = True
+                                    runs_completed += 1
+                                else:
+                                    finished = True
+                                    print(f'invalid data received:\n{data}')
+                                    proc.kill()
+                                    break
+                            RemoveFile(python_waiting_signal)
+                            CreateFile(event_completed_signal)
+                            break
+                        else:
+                            finished = True
+                            print('failed to open cpp data file')
+                            proc.kill()
+                            break
     except:
         proc.kill()        
 
@@ -104,7 +108,7 @@ def RunGameInstance():
 
 
 if __name__ == '__main__':
+    runs = int(input('run count: '))
     t = time.monotonic()
-    for i in range(int(input('number of runs: '))):
-        RunGameInstance()
+    RunGameInstances(runs)
     input(f'completed in {time.monotonic() - t:.2f} seconds')
