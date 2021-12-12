@@ -28,7 +28,9 @@ private:
 	void ResolveDoorCard(const Card& card);
 	void ResolvePremonition();
 	void CheckForLabrynthDoor();
-	void OnGameOver(EGameResult result);
+
+	void OnGameStarted();
+	void OnGameEnded();
 
 private:
 	bool m_inProgress;

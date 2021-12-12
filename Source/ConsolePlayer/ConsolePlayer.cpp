@@ -12,7 +12,19 @@ ConsolePlayer::ConsolePlayer()
 
 // -------------------------------------------------------------------------------------------------
 
-void ConsolePlayer::OnGameOver(EGameResult result)
+ConsolePlayer::~ConsolePlayer()
+{
+}
+
+// -------------------------------------------------------------------------------------------------
+
+void ConsolePlayer::OnGameStarted(const PublicGameState& state)
+{
+}
+
+// -------------------------------------------------------------------------------------------------
+
+void ConsolePlayer::OnGameEnded(const PublicGameState& state, EGameResult result)
 {
 	std::cout << "\n::: GAME OVER :::\n";
 	std::cout << "You " << LogUtils::GetGameResult(result) << "\n\n";

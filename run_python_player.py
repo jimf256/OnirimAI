@@ -22,6 +22,9 @@ def WritePythonData(data):
     with open(python_file, 'w') as f:
         f.write(data if data else '')
 
+def OnGameStarted(data):
+    python_ai_logic.HandleGameStarted(data)
+
 def ResolveTurn(data):
     WritePythonData(python_ai_logic.HandleResolveTurn(data))
 
@@ -69,6 +72,8 @@ def RunGameInstances(runs):
                                     print('empty data received')
                                     proc.kill()
                                     break
+                                elif data[0].strip() == 'OnGameStarted':
+                                    OnGameStarted(data[1:])
                                 elif data[0].strip() == 'ResolveTurn':
                                     ResolveTurn(data[1:])
                                 elif data[0].strip() == 'ResolveNightmare':
@@ -77,7 +82,7 @@ def RunGameInstances(runs):
                                     ResolveDoorCard(data[1:])
                                 elif data[0].strip() == 'ResolvePremonition':
                                     ResolvePremonition(data[1:])
-                                elif data[0].strip() == 'OnGameOver':
+                                elif data[0].strip() == 'OnGameEnded':
                                     OnGameEnded(data[1:])
                                     finished = True
                                     runs_completed += 1
@@ -94,7 +99,8 @@ def RunGameInstances(runs):
                             print('failed to open cpp data file')
                             proc.kill()
                             break
-    except:
+    except Exception as e:
+        print(f'exception: {e}')
         proc.kill()        
 
     proc.wait()    

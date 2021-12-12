@@ -15,7 +15,19 @@ AIPlayer::AIPlayer()
 
 // -------------------------------------------------------------------------------------------------
 
-void AIPlayer::OnGameOver(EGameResult result)
+AIPlayer::~AIPlayer()
+{
+}
+
+// -------------------------------------------------------------------------------------------------
+
+void AIPlayer::OnGameStarted(const PublicGameState& state)
+{
+}
+
+// -------------------------------------------------------------------------------------------------
+
+void AIPlayer::OnGameEnded(const PublicGameState& state, EGameResult result)
 {
 }
 

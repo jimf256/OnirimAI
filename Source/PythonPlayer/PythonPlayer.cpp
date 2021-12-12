@@ -14,13 +14,19 @@ PythonPlayer::PythonPlayer()
 
 // -------------------------------------------------------------------------------------------------
 
+PythonPlayer::~PythonPlayer()
+{
+}
+
+// -------------------------------------------------------------------------------------------------
+
 const std::string kCppFilename = "cpp_data.txt";
 const std::string kPythonFilename = "python_data.txt";
 const std::string kCppWaitingSignalFilename = "cpp_waiting_signal.txt";
 const std::string kPythonWaitingSignalFilename = "python_waiting_signal.txt";
 const std::string kEventStartedSignalFilename = "event_started_signal.txt";
 const std::string kEventCompletedSignalFilename = "event_completed_signal.txt";
-const std::string kGameOverSignalFilename = "game_over_signal.txt";
+const std::string kGameEndedSignalFilename = "game_over_signal.txt";
 
 // -------------------------------------------------------------------------------------------------
 
@@ -101,14 +107,24 @@ void ExchangeData(std::stringstream& sstream)
 
 // -------------------------------------------------------------------------------------------------
 
-void PythonPlayer::OnGameOver(EGameResult result)
+void PythonPlayer::OnGameStarted(const PublicGameState& state)
 {
 	std::stringstream sstream;
-	sstream << "OnGameOver\n" << LogUtils::GetGameResult(result);
+	sstream << "OnGameStarted";
 	ExchangeData(sstream);
-	//std::cout << "python sent: " << sstream.rdbuf() << "\n";
+	std::cout << "python sent: " << sstream.rdbuf() << "\n";
+}
 
-	CreateSignalFile(kGameOverSignalFilename);
+// -------------------------------------------------------------------------------------------------
+
+void PythonPlayer::OnGameEnded(const PublicGameState& state, EGameResult result)
+{
+	std::stringstream sstream;
+	sstream << "OnGameEnded\n" << LogUtils::GetGameResult(result);
+	ExchangeData(sstream);
+	std::cout << "python sent: " << sstream.rdbuf() << "\n";
+
+	CreateSignalFile(kGameEndedSignalFilename);
 }
 
 // -------------------------------------------------------------------------------------------------
@@ -136,7 +152,7 @@ void PythonPlayer::ResolveTurnAction(const PublicGameState& state, ETurnAction& 
 	std::stringstream sstream;
 	sstream << "ResolveTurn";
 	ExchangeData(sstream);
-	//std::cout << "python sent: " << sstream.rdbuf() << "\n";
+	std::cout << "python sent: " << sstream.rdbuf() << "\n";
 
 	// discard the first card in hand
 	choice = ETurnAction::DiscardCard;
@@ -150,7 +166,7 @@ void PythonPlayer::ResolveNightmareCard(const PublicGameState& state, EResolveNi
 	std::stringstream sstream;
 	sstream << "ResolveNightmare";
 	ExchangeData(sstream);
-	//std::cout << "python sent: " << sstream.rdbuf() << "\n";
+	std::cout << "python sent: " << sstream.rdbuf() << "\n";
 
 	// discard hand
 	choice = EResolveNightmareAction::DiscardHand;
@@ -163,7 +179,7 @@ void PythonPlayer::ResolveDoorCard(const PublicGameState& state, const Card& doo
 	std::stringstream sstream;
 	sstream << "ResolveDoorCard";
 	ExchangeData(sstream);
-	//std::cout << "python sent: " << sstream.rdbuf() << "\n";
+	std::cout << "python sent: " << sstream.rdbuf() << "\n";
 
 	// always discard a key to get a door
 	choice = EResolveDoorAction::DiscardKeyCard;
@@ -176,7 +192,7 @@ void PythonPlayer::ResolvePremonition(const PublicGameState& state, std::vector<
 	std::stringstream sstream;
 	sstream << "ResolvePremonition";
 	ExchangeData(sstream);
-	//std::cout << "python sent: " << sstream.rdbuf() << "\n";
+	std::cout << "python sent: " << sstream.rdbuf() << "\n";
 
 	// keep the current order
 }

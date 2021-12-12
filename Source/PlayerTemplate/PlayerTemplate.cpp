@@ -12,7 +12,19 @@ PlayerTemplate::PlayerTemplate()
 
 // -------------------------------------------------------------------------------------------------
 
-void PlayerTemplate::OnGameOver(EGameResult result)
+PlayerTemplate::~PlayerTemplate()
+{
+}
+
+// -------------------------------------------------------------------------------------------------
+
+void PlayerTemplate::OnGameStarted(const PublicGameState& state)
+{
+}
+
+// -------------------------------------------------------------------------------------------------
+
+void PlayerTemplate::OnGameEnded(const PublicGameState& state, EGameResult result)
 {
 	std::cout << "Game Result: " << LogUtils::GetGameResult(result) << "\n";
 	system("pause");

@@ -39,13 +39,49 @@ void GameLogic::Run()
 	DrawCards(true);
 	ShuffleLimboCards();
 
-	m_inProgress = true;
-	while (m_inProgress)
+	OnGameStarted();
+	while (m_result == EGameResult::Unknown)
 	{
 		ResolveTurn();
 		DrawCards(false);
 		ShuffleLimboCards();
 	}
+	OnGameEnded();
+}
+
+// -------------------------------------------------------------------------------------------------
+
+void GameLogic::OnGameStarted()
+{
+	m_result = EGameResult::Unknown;
+	m_inProgress = true;
+
+	// pass a copy of the gamestate to prevent cheating
+	PublicGameState gameStateCopy = *m_gameState;
+	m_player.OnGameStarted(gameStateCopy);
+}
+
+// -------------------------------------------------------------------------------------------------
+
+void GameLogic::OnGameEnded()
+{
+	assert(m_result != EGameResult::Unknown);
+	m_inProgress = false;
+
+	// pass a copy of the gamestate to prevent cheating
+	PublicGameState gameStateCopy = *m_gameState;
+	m_player.OnGameEnded(gameStateCopy, m_result);
+
+	// print end-of-game state to the log
+	LOG("\n\n::: game ended :::\n");
+	LOG("game result: " + LogUtils::GetGameResult(result) + "\n");
+	LOG("doors:\n" + LogUtils::GetDoorState(m_gameState->GetDoorProgress()));
+	LOG("labrynth: " + LogUtils::GetCollectionContents(m_gameState->GetLabrynth(), true, true));
+	LOG("hand: " + LogUtils::GetCollectionContents(m_gameState->GetHand(), true, true));
+	LOG("discard:\n" + LogUtils::GetCardCounterState(m_gameState->GetDiscard()));
+	LOG("limbo: " + LogUtils::GetCollectionContents(m_gameState->GetLimbo(), true, true));
+	LOG("deck: " + LogUtils::GetCollectionContents(m_gameState->GetDeck(), true, true));
+
 }
 
 // -------------------------------------------------------------------------------------------------
@@ -166,19 +202,19 @@ void GameLogic::DrawCards(bool nonLocationCardsToLimbo)
 	// check for game over - out of cards
 	if (hand.Size() < kMaxHandSize && deck.Size() == 0)
 	{
-		OnGameOver(EGameResult::Loss_OutOfCards);
+		m_result = EGameResult::Loss_OutOfCards;
 	}
 
 	// check for game over - a door was discarded
 	if (discard.Get(ECardType::Door) > 0)
 	{
-		OnGameOver(EGameResult::Loss_DiscardedDoor);
+		m_result = EGameResult::Loss_DiscardedDoor;
 	}
 
 	// check for game over - all doors completed
 	if (doorProgress.HasAllDoors())
 	{
-		OnGameOver(EGameResult::Win);
+		m_result = EGameResult::Win;
 	}
 }
 
@@ -589,26 +625,6 @@ void GameLogic::CheckForLabrynthDoor()
 
 		deck.Shuffle();
 	}
-}
-
-// -------------------------------------------------------------------------------------------------
-
-void GameLogic::OnGameOver(EGameResult result)
-{
-	m_result = result;
-	m_inProgress = false;
-	m_player.OnGameOver(result);
-
-	// print end-of-game state to the log
-	LOG("\n\n::: game ended :::\n");
-	LOG("game result: " + LogUtils::GetGameResult(result) + "\n");
-	LOG("doors:\n" + LogUtils::GetDoorState(m_gameState->GetDoorProgress()));
-	LOG("labrynth: " + LogUtils::GetCollectionContents(m_gameState->GetLabrynth(), true, true));
-	LOG("hand: " + LogUtils::GetCollectionContents(m_gameState->GetHand(), true, true));
-	LOG("discard:\n" + LogUtils::GetCardCounterState(m_gameState->GetDiscard()));
-	LOG("limbo: " + LogUtils::GetCollectionContents(m_gameState->GetLimbo(), true, true));
-	LOG("deck: " + LogUtils::GetCollectionContents(m_gameState->GetDeck(), true, true));
-
 }
 
 // -------------------------------------------------------------------------------------------------
