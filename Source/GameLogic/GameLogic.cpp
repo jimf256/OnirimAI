@@ -74,7 +74,7 @@ void GameLogic::OnGameEnded()
 
 	// print end-of-game state to the log
 	LOG("\n\n::: game ended :::\n");
-	LOG("game result: " + LogUtils::GetGameResult(result) + "\n");
+	LOG("game result: " + LogUtils::GetGameResult(m_result) + "\n");
 	LOG("doors:\n" + LogUtils::GetDoorState(m_gameState->GetDoorProgress()));
 	LOG("labrynth: " + LogUtils::GetCollectionContents(m_gameState->GetLabrynth(), true, true));
 	LOG("hand: " + LogUtils::GetCollectionContents(m_gameState->GetHand(), true, true));
