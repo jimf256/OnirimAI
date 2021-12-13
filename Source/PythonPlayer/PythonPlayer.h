@@ -38,3 +38,8 @@ extern "C" __declspec(dllexport) void DestroyPlayerInstance(PlayerInterface * pl
 
 // -------------------------------------------------------------------------------------------------
 
+extern "C" __declspec(dllexport) void WaitForCppData();
+extern "C" __declspec(dllexport) void SignalPythonData();
+
+// -------------------------------------------------------------------------------------------------
+

@@ -28,11 +28,54 @@ static char* g_data = nullptr;
 
 const std::size_t kDataSize = 1024;
 const std::string kDataFilename = "shared_data.txt";
-const std::string kCppWaitingSignalFilename = "cpp_waiting_signal.txt";
-const std::string kPythonWaitingSignalFilename = "python_waiting_signal.txt";
-const std::string kEventStartedSignalFilename = "event_started_signal.txt";
-const std::string kEventCompletedSignalFilename = "event_completed_signal.txt";
-const std::string kGameEndedSignalFilename = "game_over_signal.txt";
+
+struct SemaphoreWrapper
+{
+	SemaphoreWrapper(const std::string& name)
+		: m_name(name)
+		, m_handle(NULL)
+	{
+		m_handle = CreateSemaphoreA(NULL, 0, 1, name.c_str());
+		assert(m_handle != NULL);
+	}
+
+	~SemaphoreWrapper()
+	{
+		bool result = CloseHandle(m_handle);
+		assert(result);
+	}
+
+	void Wait()
+	{
+		WaitForSingleObject(m_handle, INFINITE);
+	}
+
+	void Release()
+	{
+		ReleaseSemaphore(m_handle, 1, NULL);
+	}
+
+private:
+	std::string m_name;
+	HANDLE m_handle;
+};
+
+static SemaphoreWrapper g_cppDataAccess("onirim_cpp_data_semaphore");
+static SemaphoreWrapper g_pythonDataAccess("onirim_python_data_semaphore");
+
+// -------------------------------------------------------------------------------------------------
+
+extern "C" __declspec(dllexport) void WaitForCppData()
+{
+	g_cppDataAccess.Wait();
+}
+
+// -------------------------------------------------------------------------------------------------
+
+extern "C" __declspec(dllexport) void SignalPythonData()
+{
+	g_pythonDataAccess.Release();
+}
 
 // -------------------------------------------------------------------------------------------------
 
@@ -75,40 +118,6 @@ PythonPlayer::~PythonPlayer()
 
 // -------------------------------------------------------------------------------------------------
 
-void CreateSignalFile(const std::string& filename)
-{
-	std::ofstream file(filename);
-	if (file.is_open())
-	{
-		file.flush();
-		file.close();
-	}
-}
-
-// -------------------------------------------------------------------------------------------------
-
-void WaitForSignalFile(const std::string& filename)
-{
-	while (true)
-	{
-		std::ifstream file(filename);
-		if (file.is_open())
-		{
-			file.close();
-			break;
-		}
-	}
-}
-
-// -------------------------------------------------------------------------------------------------
-
-void DeleteSignalFile(const std::string& filename)
-{
-	std::remove(filename.c_str());
-}
-
-// -------------------------------------------------------------------------------------------------
-
 void WriteCppData(std::stringstream& sstream)
 {
 	if (g_data != nullptr)
@@ -144,15 +153,10 @@ void ReadPythonData(std::stringstream& sstream)
 
 void ExchangeData(std::stringstream& sstream)
 {
-	CreateSignalFile(kEventStartedSignalFilename);
-	WaitForSignalFile(kPythonWaitingSignalFilename);
-	DeleteSignalFile(kEventStartedSignalFilename);
-
 	WriteCppData(sstream);
 
-	CreateSignalFile(kCppWaitingSignalFilename);
-	WaitForSignalFile(kEventCompletedSignalFilename);
-	DeleteSignalFile(kCppWaitingSignalFilename);
+	g_cppDataAccess.Release();
+	g_pythonDataAccess.Wait();
 
 	ReadPythonData(sstream);
 }
@@ -175,8 +179,6 @@ void PythonPlayer::OnGameEnded(const PublicGameState& state, EGameResult result)
 	sstream << "OnGameEnded\n" << LogUtils::GetGameResult(result);
 	ExchangeData(sstream);
 	//std::cout << "python sent: " << sstream.rdbuf() << "\n";
-
-	CreateSignalFile(kGameEndedSignalFilename);
 }
 
 // -------------------------------------------------------------------------------------------------
