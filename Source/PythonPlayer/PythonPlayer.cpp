@@ -30,6 +30,7 @@ extern "C" __declspec(dllexport) void SignalPythonData()
 
 PythonPlayer::PythonPlayer()
 	: m_dataFile("shared_data.txt", 1024)
+	, m_result(EGameResult::Unknown)
 {
 }
 
@@ -73,6 +74,7 @@ void PythonPlayer::SerializeGameState(std::stringstream& sstream, const PublicGa
 	static const std::vector<EColor> colors { EColor::Red, EColor::Blue, EColor::Green, EColor::Yellow };
 	static const std::vector<ECardType> types { ECardType::Sun, ECardType::Moon, ECardType::Key, ECardType::Door };
 
+	sstream << "result=" << static_cast<int>(m_result) << "\n";
 	sstream << "deck_remaining=" << state.GetDeckRemaining() << "\n";
 	sstream << "nm_remaining=" << state.GetNightmaresRemaining() << "\n";
 
@@ -129,7 +131,8 @@ void PythonPlayer::OnGameStarted(const PublicGameState& state)
 void PythonPlayer::OnGameEnded(const PublicGameState& state, EGameResult result)
 {
 	g_sstream.str("");
-	g_sstream << "OnGameEnded\n" << LogUtils::GetGameResult(result);
+	g_sstream << "OnGameEnded\n";
+	m_result = result;
 	SerializeGameState(g_sstream, state);
 	ExchangeData(g_sstream);
 }
