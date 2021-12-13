@@ -154,10 +154,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="MappedFile.cpp" />
     <ClCompile Include="PythonPlayer.cpp" />
+    <ClCompile Include="Semaphore.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MappedFile.h" />
     <ClInclude Include="PythonPlayer.h" />
+    <ClInclude Include="Semaphore.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

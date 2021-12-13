@@ -1,5 +1,7 @@
 #pragma once
 #include "PlayerInterface.h"
+#include "MappedFile.h"
+#include <sstream>
 
 // -------------------------------------------------------------------------------------------------
 
@@ -20,6 +22,12 @@ public:
 	virtual void ResolveNightmareCard(const PublicGameState& state, EResolveNightmareAction& choice, EColor& color);
 	virtual void ResolveDoorCard(const PublicGameState& state, const Card& doorCard, EResolveDoorAction& choice);
 	virtual void ResolvePremonition(const PublicGameState& state, std::vector<Card>& reorderedCards);
+
+private:
+	void ExchangeData(std::stringstream& sstream);
+
+private:
+	MappedFile m_dataFile;
 };
 
 // -------------------------------------------------------------------------------------------------
