@@ -75,6 +75,7 @@
     <ClInclude Include="..\GameUtils\Headers\LogUtils.h" />
     <ClInclude Include="..\GameUtils\Headers\PlayerInterface.h" />
     <ClInclude Include="..\GameUtils\Headers\PublicGameState.h" />
+    <ClInclude Include="..\GameUtils\Headers\Random.h" />
     <ClInclude Include="PlayerTemplate.h" />
   </ItemGroup>
   <ItemGroup>
