@@ -109,6 +109,21 @@ std::string LogUtils::GetColor(EColor color)
 
 // -------------------------------------------------------------------------------------------------
 
+char LogUtils::GetColorChar(EColor color)
+{
+	switch (color)
+	{
+		case EColor::Red:    return 'R';
+		case EColor::Blue:   return 'B';
+		case EColor::Green:  return 'G';
+		case EColor::Yellow: return 'Y';
+	}
+
+	return '\0';
+}
+
+// -------------------------------------------------------------------------------------------------
+
 std::string LogUtils::GetCardType(ECardType type)
 {
 	switch (type)
@@ -121,6 +136,22 @@ std::string LogUtils::GetCardType(ECardType type)
 	}
 
 	return "None";
+}
+
+// -------------------------------------------------------------------------------------------------
+
+char LogUtils::GetCardTypeChar(ECardType type)
+{
+	switch (type)
+	{
+	case ECardType::Sun:       return 'S';
+	case ECardType::Moon:      return 'M';
+	case ECardType::Key:       return 'K';
+	case ECardType::Door:      return 'D';
+	case ECardType::Nightmare: return 'N';
+	}
+
+	return '\0';
 }
 
 // -------------------------------------------------------------------------------------------------
@@ -145,7 +176,7 @@ std::string LogUtils::GetDoorState(const DoorProgress& progress)
 	static std::ostringstream output;
 	output.str("");
 
-	std::vector<EColor> colors { EColor::Red, EColor::Blue, EColor::Green, EColor::Yellow };
+	static const std::vector<EColor> colors { EColor::Red, EColor::Blue, EColor::Green, EColor::Yellow };
 	for (auto it = colors.begin(); it != colors.end(); ++it)
 	{
 		output << " " << GetColor(*it) << " doors: " << progress.CountDoors(*it) << "/" << progress.GetDoorsRequired() << "\n";
@@ -161,8 +192,8 @@ std::string LogUtils::GetCardCounterState(const CardCounter& counter)
 	static std::ostringstream output;
 	output.str("");
 
-	std::vector<ECardType> cardTypes { ECardType::Sun, ECardType::Moon, ECardType::Key, ECardType::Door };
-	std::vector<EColor> colors { EColor::Red, EColor::Blue, EColor::Green, EColor::Yellow };
+	static const std::vector<ECardType> cardTypes { ECardType::Sun, ECardType::Moon, ECardType::Key, ECardType::Door };
+	static const std::vector<EColor> colors { EColor::Red, EColor::Blue, EColor::Green, EColor::Yellow };
 	for (auto colIt = colors.begin(); colIt != colors.end(); ++colIt)
 	{
 		output << " " << GetColor(*colIt) << ": ";
