@@ -24,6 +24,7 @@ public:
 	virtual void ResolvePremonition(const PublicGameState& state, std::vector<Card>& reorderedCards);
 
 private:
+	void SerializeGameState(std::stringstream& sstream, const PublicGameState& state);
 	void ExchangeData(std::stringstream& sstream);
 
 private:
