@@ -5,14 +5,6 @@ import python_ai_logic
 data_size = 1024
 data_file = 'shared_data.txt'
 
-def RemoveFile(file):
-    if os.path.exists(file) and os.path.isfile(file):
-        os.remove(file)
-
-def CreateFile(file):
-    with open(file, 'w') as f:
-        pass
-
 def ExchangeData(mmap_buf, ai_func):
     lines = [line.strip('\0') for line in str(mmap_buf[:], 'utf-8').split('\n') if line.strip('\0')]
     python_data = ai_func(lines[1:])
@@ -22,7 +14,6 @@ def ExchangeData(mmap_buf, ai_func):
         mmap_buf.flush()
 
 def RunGameInstances(runs):
-
     if os.path.exists(data_file) and os.path.isfile(data_file):
         os.remove(data_file)
     with open(data_file, 'wb') as f:
