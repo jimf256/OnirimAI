@@ -39,12 +39,12 @@ if "%include_python:~0,1%" == "y" (
 	mkdir "%build_dir%\Source\PythonAI"
 	copy "Source\PythonAI\*.py" "%build_dir%\Source\PythonAI\"
 	copy "Libraries\PythonPlayer.dll" "%build_dir%\Libraries"
-	copy "run_python_player.py" "%build_dir%\run_release_python_player.py"
+	copy "run_python_player.py" "%build_dir%\run_python_player.py"
 )
 
 if "%include_cpp_ai:~0,1%" == "y" (
 	copy "Libraries\AIPlayer.dll" "%build_dir%\Libraries"
-	copy "run_ai_player.py" "%build_dir%\run_release_ai_player.py"
+	copy "run_ai_player.py" "%build_dir%\run_ai_player.py"
 )
 
 echo @echo off > "%build_dir%\run_interactive_version.bat"
