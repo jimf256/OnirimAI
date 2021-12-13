@@ -1,6 +1,6 @@
 import subprocess, os, sys, time, mmap, traceback, ctypes
-sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Source', 'PythonAI'))
-import python_ai_logic
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Source', 'PythonPlayer'))
+import python_player
 
 data_size = 1024
 data_file = 'shared_data.txt'
@@ -47,17 +47,17 @@ def RunGameInstances(runs):
                         lib.SignalPythonData()
                         break
                     elif event == 'OnGameStarted':
-                        ExchangeData(mmap_buf, python_ai_logic.HandleGameStarted)
+                        ExchangeData(mmap_buf, python_player.HandleGameStarted)
                     elif event == 'ResolveTurn':
-                        ExchangeData(mmap_buf, python_ai_logic.HandleResolveTurn)
+                        ExchangeData(mmap_buf, python_player.HandleResolveTurn)
                     elif event == 'ResolveNightmare':
-                        ExchangeData(mmap_buf, python_ai_logic.HandleResolveNightmare)
+                        ExchangeData(mmap_buf, python_player.HandleResolveNightmare)
                     elif event == 'ResolveDoorCard':
-                        ExchangeData(mmap_buf, python_ai_logic.HandleResolveDoorCard)
+                        ExchangeData(mmap_buf, python_player.HandleResolveDoorCard)
                     elif event == 'ResolvePremonition':
-                        ExchangeData(mmap_buf, python_ai_logic.HandleResolvePremonition)
+                        ExchangeData(mmap_buf, python_player.HandleResolvePremonition)
                     elif event == 'OnGameEnded':
-                        ExchangeData(mmap_buf, python_ai_logic.HandleGameEnded)
+                        ExchangeData(mmap_buf, python_player.HandleGameEnded)
                         finished = True
                         runs_completed += 1
                     else:

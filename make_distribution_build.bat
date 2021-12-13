@@ -36,8 +36,8 @@ if "%include_template:~0,1%" == "y" (
 )
 
 if "%include_python:~0,1%" == "y" (
-	mkdir "%build_dir%\Source\PythonAI"
-	copy "Source\PythonAI\*.py" "%build_dir%\Source\PythonAI\"
+	mkdir "%build_dir%\Source\PythonPlayer"
+	copy "Source\PythonPlayer\*.py" "%build_dir%\Source\PythonPlayer\"
 	copy "Libraries\PythonPlayer.dll" "%build_dir%\Libraries"
 	copy "run_python_player.py" "%build_dir%\run_python_player.py"
 )
