@@ -87,8 +87,8 @@ PythonPlayer::PythonPlayer()
 	if (g_fileHandle != INVALID_HANDLE_VALUE)
 	{
 		g_fileMapping = CreateFileMappingA(g_fileHandle, NULL, PAGE_READWRITE, 0, kDataSize, NULL);
-		assert(g_fileMapping != INVALID_HANDLE_VALUE);
-		if (g_fileMapping != INVALID_HANDLE_VALUE)
+		assert(g_fileMapping != NULL);
+		if (g_fileMapping != NULL)
 		{
 			g_data = reinterpret_cast<char*>(MapViewOfFile(g_fileMapping, FILE_MAP_ALL_ACCESS, 0, 0, kDataSize));
 			assert(g_data != nullptr);
