@@ -2,6 +2,7 @@ import subprocess, os, sys, time, mmap, traceback, ctypes
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Source', 'PythonPlayer'))
 import python_player
 
+debug = True
 data_size = 1024
 data_file = 'shared_data.txt'
 
@@ -25,13 +26,16 @@ def RunGameInstances(runs):
         mmap_buf.seek(0)
 
         devnull = subprocess.DEVNULL
-        command = f'Binaries\Onirim.exe PythonPlayer runs={runs}'
+        debug_suffix = '_d' if debug else ''
+        command = f'Binaries\\Onirim{debug_suffix}.exe PythonPlayer runs={runs}'
         proc = subprocess.Popen(command, stdin=devnull, stdout=devnull, stderr=devnull, shell=False)
-        
+        if debug:
+            input('attach debugger then press return')
+
         runs_completed = 0
         error_encountered = False
         try:
-            lib = ctypes.CDLL('Libraries\\PythonPlayer.dll')
+            lib = ctypes.CDLL(f'Libraries\\PythonPlayer{debug_suffix}.dll')
 
             while not error_encountered and runs_completed < runs:
                 finished = False
