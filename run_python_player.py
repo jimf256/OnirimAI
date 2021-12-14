@@ -5,6 +5,7 @@ import python_player
 debug = False
 data_size = 1024
 data_file = 'shared_data.txt'
+results_file = 'results.log'
 
 def ExchangeData(mmap_buf, ai_func):
     lines = [line.strip('\0') for line in str(mmap_buf[:], 'utf-8').split('\n') if line.strip('\0')]
@@ -18,6 +19,8 @@ def ExchangeData(mmap_buf, ai_func):
 def RunGameInstances(runs):
     if os.path.exists(data_file) and os.path.isfile(data_file):
         os.remove(data_file)
+    if os.path.exists(results_file) and os.path.isfile(results_file):
+        os.remove(results_file)
     with open(data_file, 'wb') as f:
         f.write(b'\0' * data_size)
 
@@ -97,7 +100,7 @@ def RunGameInstances(runs):
             if line and len(line) > 2:
                 results[int(line[0])] = int(line[2:].strip())
 
-    wins = results[1]
+    wins = results.get(1, 0)
     plays = sum(results.values())
     print('\n::: results :::')
     print(f'played:   {plays}')
