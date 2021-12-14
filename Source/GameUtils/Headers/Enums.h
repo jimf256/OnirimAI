@@ -28,26 +28,26 @@ enum class ECardType
 
 enum class ETurnAction
 {
-	PlayCard,
-	DiscardCard,
+	PlayCard    = 0,
+	DiscardCard = 1,
 };
 
 // -------------------------------------------------------------------------------------------------
 
 enum class EResolveNightmareAction
 {
-	RemoveDoor,
-	DiscardKey,
-	DiscardHand,
-	DiscardDeck,
+	RemoveDoor  = 0,
+	DiscardKey  = 1,
+	DiscardHand = 2,
+	DiscardDeck = 3,
 };
 
 // -------------------------------------------------------------------------------------------------
 
 enum class EResolveDoorAction
 {
-	DiscardKeyCard,
-	KeepKeyCard,
+	DiscardKeyCard = 0,
+	KeepKeyCard    = 1,
 };
 
 // -------------------------------------------------------------------------------------------------
