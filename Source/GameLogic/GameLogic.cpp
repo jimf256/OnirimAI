@@ -44,7 +44,6 @@ void GameLogic::Run()
 	{
 		ResolveTurn();
 		DrawCards(false);
-		ShuffleLimboCards();
 	}
 	OnGameEnded();
 }
@@ -199,22 +198,24 @@ void GameLogic::DrawCards(bool nonLocationCardsToLimbo)
 		}
 	}
 
-	// check for game over - out of cards
 	if (hand.Size() < kMaxHandSize && deck.Size() == 0)
 	{
+		// check for game over - out of cards
 		m_result = EGameResult::Loss_OutOfCards;
 	}
-
-	// check for game over - a door was discarded
-	if (discard.Get(ECardType::Door) > 0)
+	else if (discard.Get(ECardType::Door) > 0)
 	{
+		// check for game over - a door was discarded
 		m_result = EGameResult::Loss_DiscardedDoor;
 	}
-
-	// check for game over - all doors completed
-	if (doorProgress.HasAllDoors())
+	else if (doorProgress.HasAllDoors())
 	{
+		// check for game over - all doors completed
 		m_result = EGameResult::Win;
+	}
+	else
+	{
+		ShuffleLimboCards();
 	}
 }
 
