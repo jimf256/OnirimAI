@@ -26,24 +26,56 @@ def HandleResolveTurn(data):
     state = ParseGameState(data)
     DebugPrint(f'python AI: resolve turn:\n{state}')
 
-    # pick action and card at random, however if we pick play we must make sure the card we
-    # choose doesn't match the last card in the labrynth.  If we can't play anything valid
-    # just discard a random card
-    choice = random.randrange(0, 2)
-    index = random.randrange(0, 5)
-    if choice == 0:
-        if state.labrynth:
-            suitable_card = None
-            for i,card in enumerate(state.hand):
-                if card[1] != state.labrynth[-1][1]:
-                    suitable_card = card
-                    index = i
-                    break
-            if suitable_card is None:
-                choice = 1
-                index = random.randrange(0, 5)            
+    # find the current state of the labrynth, how many cards of the same colour are currently on the end    
+    lab_card = state.labrynth[-1] if state.labrynth else None
+    lab_color = state.labrynth[-1][0] if state.labrynth else None
+    lab_count = 0
+    if lab_color != None:
+        for card in state.labrynth[::-1]:
+            if card[0] == lab_color:
+                lab_count += 1
+            else:
+                break
 
-    return bytearray([choice, index])
+    # can we play a card to get a door right now (third in a series)?
+    if lab_count % 3 == 2:
+        for i,card in enumerate(state.hand):
+            if card[0] == lab_color and card[1] != lab_card[1]:
+                return bytearray([0, i])
+
+    # can we play a sun/moon to get 2/3 of a color
+    if lab_count % 3 == 1:
+        for i,card in enumerate(state.hand):
+            if card[0] == lab_color and card[1] != lab_card[1] and card[1] != 'K':
+                return bytearray([0, i])
+
+    # do we have a sun/moon of one color in hand and can play one of them?
+    suns = {'R':0, 'B':0, 'G':0, 'Y':0}
+    moons = {'R':0, 'B':0, 'G':0, 'Y':0}
+    for card in state.hand:
+        if card[1] == 'S':
+            suns[card[0]] += 1
+        elif card[1] == 'M':
+            moons[card[0]] += 1
+    for c in ['R', 'B', 'G', 'Y']:
+        if suns[c] > 0 and moons[c] > 0:
+            t = 'S' if lab_card == None or lab_card[1] != 'S' else 'M'
+            for i,card in enumerate(state.hand):
+                if card[0] == c and card[1] == t:
+                    return bytearray([0, i])
+
+    # can we discard a sun/moon
+    for i,card in enumerate(state.hand):
+        if card[1] == 'S' or card[1] == 'M':
+            return bytearray([1, i])
+
+    # can we discard a key
+    for i,card in enumerate(state.hand):
+        if card[1] == 'K':
+            return bytearray([1, i])         
+
+    # fallback: discard first card
+    return bytearray([1, 0])
 
 
 # resolve a nightmare action
@@ -91,7 +123,9 @@ def HandleResolvePremonition(data):
     state = ParseGameState(data)
     DebugPrint(f'python AI: resolve premonition:\n{state}')
 
-    # prioritize keys, then doors, but avoid discarding doors
+    # prioritize keeping keys, then regular cards, then doors, then nightmares
+    # prioritize discarding nightmares, regular cards, keys then doors
+    # only discard a door if there is no other choice
     keys = []
     doors = []
     nightmares = []
