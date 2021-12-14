@@ -1,7 +1,6 @@
 #include "GameLogic.h"
 #include "Enums.h"
 #include "PlayerInterface.h"
-#include "Logging.h"
 #include "LogUtils.h"
 #include "CommandLine.h"
 #include "Random.h"
@@ -66,7 +65,7 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-		Random::SetNonDeterministicSeed();
+		Random::SetRandomSeed();
 	}
 
 	// load the player dll
@@ -81,6 +80,7 @@ int main(int argc, char* argv[])
 		}
 
 		std::cout << "using player library: " << playerModuleName << "\n";
+		std::cout << "using random seed: " << Random::GetSeed() << "\n";
 		std::cout << "running the game " << runs << ((runs > 1) ? " times" : " time") << "\n\n";
 
 		// run multiple times and cache the results

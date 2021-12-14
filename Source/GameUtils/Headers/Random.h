@@ -5,8 +5,9 @@
 
 namespace Random
 {
+	int GetSeed();
 	void SetSeed(int seed);
-	void SetNonDeterministicSeed();
+	void SetRandomSeed();
 
 	std::mt19937& GetRandomNumberEngine();
 }

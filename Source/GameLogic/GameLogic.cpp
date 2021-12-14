@@ -3,7 +3,9 @@
 #include "PlayerInterface.h"
 #include "InternalGameState.h"
 #include "LogUtils.h"
+#include "Random.h"
 #include <unordered_map>
+#include <sstream>
 #include <cassert>
 
 // -------------------------------------------------------------------------------------------------
@@ -15,6 +17,12 @@ GameLogic::GameLogic(PlayerInterface& player, Logging::PlatformLogHook logHook)
 {
 	// initialize the log system
 	Logging::Initialize("debug.log", logHook);
+
+	# if LOGGING_ENABLED
+	std::stringstream sstream;
+	sstream << "random seed: " << Random::GetSeed() << "\n";
+	LOG(sstream.str());
+	#endif
 
 	// create the game state
 	m_gameState.reset(new InternalGameState());
