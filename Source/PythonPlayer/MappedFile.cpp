@@ -83,18 +83,17 @@ void MappedFile::WriteFromStringStream(const std::stringstream& sstream) const
 
 // -------------------------------------------------------------------------------------------------
 
-void MappedFile::ReadToStringStream(std::stringstream& sstream) const
+void MappedFile::ReadBytes(std::vector<uint8_t>& outBytes) const
 {
+	outBytes.clear();
 	if (m_data != nullptr)
 	{
-		sstream.str("");
-		for (int i = 0; i < m_size; ++i)
+		// the first byte of data tells us the data size
+		// obviously this imposes a max size for the python data of 255 bytes
+		std::size_t size = m_data[0];
+		for (int i = 0; i < size; ++i)
 		{
-			sstream.put(m_data[i]);
-			if (m_data[i] == '\n')
-			{
-				break;
-			}
+			outBytes.push_back(m_data[i + 1]);
 		}
 	}
 }

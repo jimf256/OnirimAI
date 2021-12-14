@@ -2,7 +2,7 @@ import subprocess, os, sys, time, mmap, traceback, ctypes
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Source', 'PythonPlayer'))
 import python_player
 
-debug = True
+debug = False
 data_size = 1024
 data_file = 'shared_data.txt'
 
@@ -11,7 +11,8 @@ def ExchangeData(mmap_buf, ai_func):
     python_data = ai_func(lines[1:])
     if python_data:
         mmap_buf.seek(0)
-        mmap_buf.write(python_data.decode('utf-8'))
+        mmap_buf.write_byte(len(python_data))
+        mmap_buf.write(python_data)
         mmap_buf.flush()
 
 def RunGameInstances(runs):
@@ -72,8 +73,8 @@ def RunGameInstances(runs):
                         break
                     lib.SignalPythonData()
                     
-            while proc.poll() !=  None:
-                print('waiting for process to die')
+            while proc.poll() ==  None:
+                pass
 
         except Exception as e:
             print(f'exception: {e}\n')

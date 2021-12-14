@@ -4,13 +4,15 @@
 #include "LogUtils.h"
 #include <sstream>
 #include <string>
+#include <vector>
 #include <cassert>
 
 // -------------------------------------------------------------------------------------------------
 
 static Semaphore g_cppDataAccess("onirim_cpp_data_semaphore");
 static Semaphore g_pythonDataAccess("onirim_python_data_semaphore");
-static std::stringstream g_sstream;
+static std::stringstream g_cppData;
+static std::vector<uint8_t> g_pythonData;
 
 // -------------------------------------------------------------------------------------------------
 
@@ -42,12 +44,12 @@ PythonPlayer::~PythonPlayer()
 
 // -------------------------------------------------------------------------------------------------
 
-void PythonPlayer::ExchangeData(std::stringstream& sstream)
+void PythonPlayer::ExchangeData(std::stringstream& cppData, std::vector<std::uint8_t>& pythonData)
 {
-	m_dataFile.WriteFromStringStream(sstream);
+	m_dataFile.WriteFromStringStream(cppData);
 	g_cppDataAccess.Release();
 	g_pythonDataAccess.Wait();
-	m_dataFile.ReadToStringStream(sstream);
+	m_dataFile.ReadBytes(pythonData);
 }
 
 // -------------------------------------------------------------------------------------------------
@@ -120,21 +122,21 @@ void PythonPlayer::SerializeGameState(std::stringstream& sstream, const PublicGa
 
 void PythonPlayer::OnGameStarted(const PublicGameState& state)
 {
-	g_sstream.str("");
-	g_sstream << "OnGameStarted\n";
-	SerializeGameState(g_sstream, state);
-	ExchangeData(g_sstream);
+	g_cppData.str("");
+	g_cppData << "OnGameStarted\n";
+	SerializeGameState(g_cppData, state);
+	ExchangeData(g_cppData, g_pythonData);
 }
 
 // -------------------------------------------------------------------------------------------------
 
 void PythonPlayer::OnGameEnded(const PublicGameState& state, EGameResult result)
 {
-	g_sstream.str("");
-	g_sstream << "OnGameEnded\n";
+	g_cppData.str("");
+	g_cppData << "OnGameEnded\n";
 	m_result = result;
-	SerializeGameState(g_sstream, state);
-	ExchangeData(g_sstream);
+	SerializeGameState(g_cppData, state);
+	ExchangeData(g_cppData, g_pythonData);
 }
 
 // -------------------------------------------------------------------------------------------------
@@ -159,58 +161,113 @@ void PythonPlayer::OnDoorModified(EColor color, EDoorModification modification)
 
 void PythonPlayer::ResolveTurnAction(const PublicGameState& state, ETurnAction& choice, std::size_t& handIndex)
 {
-	g_sstream.str("");
-	g_sstream << "ResolveTurn\n";
-	SerializeGameState(g_sstream, state);
-	ExchangeData(g_sstream);
+	g_cppData.str("");
+	g_cppData << "ResolveTurn\n";
+	SerializeGameState(g_cppData, state);
+	ExchangeData(g_cppData, g_pythonData);
 
-	// discard the first card in hand
-	choice = ETurnAction::DiscardCard;
-	handIndex = 0;
+	// extract the turn action and card index from the returned python data
+	assert(g_pythonData.size() == 2);
+	if (g_pythonData.size() == 2)
+	{
+		assert(g_pythonData[0] < 2);
+		assert(g_pythonData[1] < 5);
+		choice = static_cast<ETurnAction>(g_pythonData[0]);
+		handIndex = static_cast<std::size_t>(g_pythonData[1]);
+	}
+	else
+	{
+		// backup default
+		choice = ETurnAction::DiscardCard;
+		handIndex = 0;
+	}
 }
 
 // -------------------------------------------------------------------------------------------------
 
 void PythonPlayer::ResolveNightmareCard(const PublicGameState& state, EResolveNightmareAction& choice, EColor& color)
 {
-	g_sstream.str("");
-	g_sstream << "ResolveNightmare\n";
-	SerializeGameState(g_sstream, state);
-	ExchangeData(g_sstream);
+	g_cppData.str("");
+	g_cppData << "ResolveNightmare\n";
+	SerializeGameState(g_cppData, state);
+	ExchangeData(g_cppData, g_pythonData);
 
-	// discard hand
-	choice = EResolveNightmareAction::DiscardHand;
+	// extract the nightmare action and door/key color from the returned python data
+	assert(g_pythonData.size() == 2);
+	if (g_pythonData.size() == 2)
+	{
+		assert(g_pythonData[0] < 4);
+		assert(g_pythonData[1] < 4);
+		choice = static_cast<EResolveNightmareAction>(g_pythonData[0]);
+		color = static_cast<EColor>(g_pythonData[1]);
+	}
+	else
+	{
+		// backup default
+		choice = EResolveNightmareAction::DiscardHand;
+	}
 }
 
 // -------------------------------------------------------------------------------------------------
 
 void PythonPlayer::ResolveDoorCard(const PublicGameState& state, const Card& doorCard, EResolveDoorAction& choice)
 {
-	g_sstream.str("");
-	g_sstream << "ResolveDoorCard\n";
-	SerializeGameState(g_sstream, state);
-	ExchangeData(g_sstream);
+	g_cppData.str("");
+	g_cppData << "ResolveDoorCard\n";
+	SerializeGameState(g_cppData, state);
+	ExchangeData(g_cppData, g_pythonData);
 
-	// always discard a key to get a door
-	choice = EResolveDoorAction::DiscardKeyCard;
+	// extract the door card action from the returned python data
+	assert(g_pythonData.size() == 1);
+	if (g_pythonData.size() == 1)
+	{
+		assert(g_pythonData[0] < 2);
+		choice = static_cast<EResolveDoorAction>(g_pythonData[0]);
+	}
+	else
+	{
+		// backup default
+		choice = EResolveDoorAction::DiscardKeyCard;
+	}
 }
 
 // -------------------------------------------------------------------------------------------------
 
 void PythonPlayer::ResolvePremonition(const PublicGameState& state, std::vector<Card>& reorderedCards)
 {
-	g_sstream.str("");
-	g_sstream << "ResolvePremonition\n";
-	SerializeGameState(g_sstream, state);
+	g_cppData.str("");
+	g_cppData << "ResolvePremonition\n";
+	SerializeGameState(g_cppData, state);
 
 	// also serialize the revealed cards from the deck
-	g_sstream << "premonition=";
-	SerializeCardVector(reorderedCards, g_sstream);
-	g_sstream << "\n";
+	g_cppData << "premonition=";
+	SerializeCardVector(reorderedCards, g_cppData);
+	g_cppData << "\n";
 
-	ExchangeData(g_sstream);
+	ExchangeData(g_cppData, g_pythonData);
 
-	// keep the current order
+	// extract the premonition card order from the returned python data
+	assert(g_pythonData.size() == 5);
+	if (g_pythonData.size() == 5)
+	{
+		std::vector<Card> copy;
+		for (std::size_t i = 0; i < g_pythonData.size(); ++i)
+		{
+			assert(g_pythonData[i] < 5);
+			if (g_pythonData[i] < 5)
+			{
+				copy.push_back(reorderedCards[g_pythonData[i]]);
+			}
+		}
+		if (copy.size() == reorderedCards.size())
+		{
+			reorderedCards = copy;
+		}
+	}
+	else
+	{
+		// backup default
+	}
 }
 
 // -------------------------------------------------------------------------------------------------

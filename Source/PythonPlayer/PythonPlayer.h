@@ -25,7 +25,7 @@ public:
 
 private:
 	void SerializeGameState(std::stringstream& sstream, const PublicGameState& state);
-	void ExchangeData(std::stringstream& sstream);
+	void ExchangeData(std::stringstream& cppData, std::vector<std::uint8_t>& pythonData);
 
 private:
 	MappedFile m_dataFile;
