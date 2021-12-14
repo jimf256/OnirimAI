@@ -7,6 +7,13 @@ class GameState:
         return s
 
 
+def GetColorByte(color_char):
+    lookup = {'R':0, 'B':1, 'G':2, 'Y':3}
+    if color_char.upper() not in lookup:
+        return 0
+    return lookup[color_char.upper()]
+
+
 def ParseGameState(data):
     state = GameState()
     for entry in data:
