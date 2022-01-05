@@ -1,6 +1,12 @@
-import subprocess, os, sys, time, mmap, traceback, ctypes
+import subprocess, os, sys, time, mmap, traceback, ctypes, importlib
+
+# determine which AI script to import via the python_player_config.ini file
+ai_module_name = 'normal_ai'
+config_file = 'python_player_config.ini'
+with open(config_file, 'r') as f:
+    ai_module_name = f.readline().strip()
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Source', 'PythonPlayer'))
-import python_player
+ai_module = importlib.import_module(ai_module_name)
 
 debug = False
 data_size = 1024
@@ -55,17 +61,17 @@ def RunGameInstances(runs):
                         lib.SignalPythonData()
                         break
                     elif event == 'OnGameStarted':
-                        ExchangeData(mmap_buf, python_player.HandleGameStarted)
+                        ExchangeData(mmap_buf, ai_module.HandleGameStarted)
                     elif event == 'ResolveTurn':
-                        ExchangeData(mmap_buf, python_player.HandleResolveTurn)
+                        ExchangeData(mmap_buf, ai_module.HandleResolveTurn)
                     elif event == 'ResolveNightmare':
-                        ExchangeData(mmap_buf, python_player.HandleResolveNightmare)
+                        ExchangeData(mmap_buf, ai_module.HandleResolveNightmare)
                     elif event == 'ResolveDoorCard':
-                        ExchangeData(mmap_buf, python_player.HandleResolveDoorCard)
+                        ExchangeData(mmap_buf, ai_module.HandleResolveDoorCard)
                     elif event == 'ResolvePremonition':
-                        ExchangeData(mmap_buf, python_player.HandleResolvePremonition)
+                        ExchangeData(mmap_buf, ai_module.HandleResolvePremonition)
                     elif event == 'OnGameEnded':
-                        ExchangeData(mmap_buf, python_player.HandleGameEnded)
+                        ExchangeData(mmap_buf, ai_module.HandleGameEnded)
                         finished = True
                         runs_completed += 1
                     else:
