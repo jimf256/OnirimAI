@@ -35,6 +35,8 @@ def RunGameInstances(runs):
         mmap_buf.flush()
         mmap_buf.seek(0)
 
+        ai_module.OnSimulationStarted()
+        
         devnull = subprocess.DEVNULL
         debug_suffix = '_d' if debug else ''
         command = f'Binaries\\Onirim{debug_suffix}.exe PythonPlayer runs={runs}'
@@ -100,6 +102,8 @@ def RunGameInstances(runs):
     if os.path.exists(data_file) and os.path.isfile(data_file):
         os.remove(data_file)
 
+    ai_module.OnSimulationEnded()
+    
     results = {}
     with open('results.log', 'r') as f:
         for line in [x.strip() for x in f.readlines()]:

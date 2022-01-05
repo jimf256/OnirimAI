@@ -7,11 +7,25 @@ def DebugPrint(s):
     if debug_printing:
         print(s)
 
+
+# called once before any games are run
+def OnSimulationStarted():
+    DebugPrint(f'\npython AI: simulation started')
+
+
+# called once after all games have completed
+def OnSimulationEnded():
+    DebugPrint(f'\npython AI: simulation ended')
+
+
+# called before the first turn of the game
 def HandleGameStarted(data):
     state = ParseGameState(data)
     DebugPrint(f'\npython AI: game started:\n{state}')
     return None
 
+
+# called when the game has ended
 def HandleGameEnded(data):
     state = ParseGameState(data)
     DebugPrint(f'\npython AI: game ended:\n{state}')
