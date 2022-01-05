@@ -40,6 +40,7 @@ if "%include_python:~0,1%" == "y" (
 	copy "Source\PythonPlayer\*.py" "%build_dir%\Source\PythonPlayer\"
 	copy "Libraries\PythonPlayer.dll" "%build_dir%\Libraries"
 	copy "run_python_player.py" "%build_dir%\run_python_player.py"
+	copy "python_player_config.ini" "%build_dir%\python_player_config.ini"
 )
 
 if "%include_cpp_ai:~0,1%" == "y" (
