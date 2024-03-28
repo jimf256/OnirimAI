@@ -1,11 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30907.101
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConsolePlayer", "ConsolePlayer\ConsolePlayer.vcxproj", "{871CD363-48EE-48EB-A18D-20F729943EEE}"
 	ProjectSection(ProjectDependencies) = postProject
-		{21497A0E-0680-4A31-8E3F-B6A4194C57AA} = {21497A0E-0680-4A31-8E3F-B6A4194C57AA}
 		{D987764D-B837-4DE4-8526-D7974F50F82A} = {D987764D-B837-4DE4-8526-D7974F50F82A}
 	EndProjectSection
 EndProject
@@ -18,13 +17,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameUtils", "GameUtils\Game
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AIPlayer", "AIPlayer\AIPlayer.vcxproj", "{45F42EEC-20C6-45D6-B38E-E43DE5002B4F}"
 	ProjectSection(ProjectDependencies) = postProject
-		{21497A0E-0680-4A31-8E3F-B6A4194C57AA} = {21497A0E-0680-4A31-8E3F-B6A4194C57AA}
 		{D987764D-B837-4DE4-8526-D7974F50F82A} = {D987764D-B837-4DE4-8526-D7974F50F82A}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PlayerTemplate", "PlayerTemplate\PlayerTemplate.vcxproj", "{6ACA50E3-DCDF-416A-9BA0-0E073A77D454}"
 	ProjectSection(ProjectDependencies) = postProject
-		{21497A0E-0680-4A31-8E3F-B6A4194C57AA} = {21497A0E-0680-4A31-8E3F-B6A4194C57AA}
 		{D987764D-B837-4DE4-8526-D7974F50F82A} = {D987764D-B837-4DE4-8526-D7974F50F82A}
 	EndProjectSection
 EndProject
@@ -32,7 +29,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Players", "Players", "{DD31
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PythonPlayer", "PythonPlayer\PythonPlayer.vcxproj", "{102101CA-B5B5-420B-8174-4562AE4397C0}"
 	ProjectSection(ProjectDependencies) = postProject
-		{21497A0E-0680-4A31-8E3F-B6A4194C57AA} = {21497A0E-0680-4A31-8E3F-B6A4194C57AA}
 		{D987764D-B837-4DE4-8526-D7974F50F82A} = {D987764D-B837-4DE4-8526-D7974F50F82A}
 	EndProjectSection
 EndProject
