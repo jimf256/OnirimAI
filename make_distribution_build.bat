@@ -48,7 +48,7 @@ if "%include_python:~0,1%" == "y" (
 if "%include_cpp_ai:~0,1%" == "y" (
 	copy "Libraries\AIPlayer.dll" "%build_dir%\Libraries"
 	copy "run_cpp_AI.py" "%build_dir%\run_cpp_AI.py"
-	echo PlayerTemplate > "%build_dir%\cpp_player_config.ini"
+	echo AIPlayer > "%build_dir%\cpp_player_config.ini"
 )
 
 echo @echo off > "%build_dir%\run_interactive_version.bat"
