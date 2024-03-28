@@ -64,8 +64,8 @@ void GameLogic::OnGameStarted()
 	m_inProgress = true;
 
 	// pass a copy of the gamestate to prevent cheating
-	PublicGameState gameStateCopy = *m_gameState;
-	m_player.OnGameStarted(gameStateCopy);
+	m_gameStateCopy = *m_gameState;
+	m_player.OnGameStarted(m_gameStateCopy);
 }
 
 // -------------------------------------------------------------------------------------------------
@@ -76,8 +76,8 @@ void GameLogic::OnGameEnded()
 	m_inProgress = false;
 
 	// pass a copy of the gamestate to prevent cheating
-	PublicGameState gameStateCopy = *m_gameState;
-	m_player.OnGameEnded(gameStateCopy, m_result);
+	m_gameStateCopy = *m_gameState;
+	m_player.OnGameEnded(m_gameStateCopy, m_result);
 
 	// print end-of-game state to the log
 	LOG("\n\n::: game ended :::\n");
@@ -270,8 +270,8 @@ void GameLogic::ResolveTurn()
 	// query player - player code is passed a copy of the gamestate to prevent cheating
 	ETurnAction choice = ETurnAction::PlayCard;
 	std::size_t choiceIndex = 0;
-	PublicGameState gameStateCopy = *m_gameState;
-	m_player.ResolveTurnAction(gameStateCopy, choice, choiceIndex);
+	m_gameStateCopy = *m_gameState;
+	m_player.ResolveTurnAction(m_gameStateCopy, choice, choiceIndex);
 
 	LOG("");
 	assert(hand.Size() > 0);
@@ -352,8 +352,8 @@ void GameLogic::ResolveNightmareCard(const Card& card)
 	// query player - player code is passed a copy of the gamestate to prevent cheating
 	EResolveNightmareAction choice = EResolveNightmareAction::DiscardDeck;
 	EColor choiceColor = EColor::None;
-	PublicGameState gameStateCopy = *m_gameState;
-	m_player.ResolveNightmareCard(gameStateCopy, choice, choiceColor);
+	m_gameStateCopy = *m_gameState;
+	m_player.ResolveNightmareCard(m_gameStateCopy, choice, choiceColor);
 
 	if (choice == EResolveNightmareAction::DiscardDeck)
 	{
@@ -480,8 +480,8 @@ void GameLogic::ResolveDoorCard(const Card& card)
 
 		// query player - player code is passed a copy of the gamestate to prevent cheating
 		EResolveDoorAction choice = EResolveDoorAction::DiscardKeyCard;
-		PublicGameState gameStateCopy = *m_gameState;
-		m_player.ResolveDoorCard(gameStateCopy, card, choice);
+		m_gameStateCopy = *m_gameState;
+		m_player.ResolveDoorCard(m_gameStateCopy, card, choice);
 
 		if (choice == EResolveDoorAction::DiscardKeyCard)
 		{
@@ -546,8 +546,8 @@ void GameLogic::ResolvePremonition()
 	// query player - player code is passed a copy of the gamestate to prevent cheating
 	std::size_t choiceIndex = 0;
 	std::vector<Card> reordered = deckCards;
-	PublicGameState gameStateCopy = *m_gameState;
-	m_player.ResolvePremonition(gameStateCopy, reordered);
+	m_gameStateCopy = *m_gameState;
+	m_player.ResolvePremonition(m_gameStateCopy, reordered);
 
 	// validate reordered vector contains the same cards
 	assert(reordered.size() == deckCards.size());

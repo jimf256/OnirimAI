@@ -1,12 +1,12 @@
 #pragma once
 #include "Enums.h"
 #include "Logging.h"
+#include "PublicGameState.h"
 #include <memory>
 
 class Card;
 class PlayerInterface;
 class InternalGameState;
-class PublicGameState;
 
 // -------------------------------------------------------------------------------------------------
 
@@ -37,6 +37,7 @@ private:
 	EGameResult m_result;
 	PlayerInterface& m_player;
 	std::unique_ptr<InternalGameState> m_gameState;
+	PublicGameState m_gameStateCopy;
 };
 
 // -------------------------------------------------------------------------------------------------
