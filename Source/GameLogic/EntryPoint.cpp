@@ -119,6 +119,7 @@ int main(int argc, char* argv[])
 		std::ofstream resultsFile(kResultsFileName);
 		if (resultsFile.is_open())
 		{
+			std::cout << "\nResults:\n";
 			for (auto it = results.begin(); it != results.end(); ++it)
 			{
 				resultsFile << static_cast<int>(it->first) << ": " << it->second << "\n";
@@ -127,6 +128,8 @@ int main(int argc, char* argv[])
 			resultsFile.flush();
 			resultsFile.close();
 		}
+
+		system("pause");
 	}
 	else
 	{

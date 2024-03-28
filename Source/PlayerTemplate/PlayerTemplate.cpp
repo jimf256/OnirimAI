@@ -26,6 +26,7 @@ void PlayerTemplate::OnGameStarted(const PublicGameState& state)
 
 void PlayerTemplate::OnGameEnded(const PublicGameState& state, EGameResult result)
 {
+	std::cout << "result: " << LogUtils::GetGameResult(result) << "\n";
 }
 
 // -------------------------------------------------------------------------------------------------
