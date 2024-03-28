@@ -420,7 +420,10 @@ void GameLogic::ResolveNightmareCard(const Card& card)
 		}
 		else
 		{
+			// the player doesn't have a matching key to discard
 			assert(!"there was no key to discard");
+			LOG("error: no matching key to discard");
+			m_result = EGameResult::Error;
 		}
 	}
 
@@ -439,7 +442,10 @@ void GameLogic::ResolveNightmareCard(const Card& card)
 		}
 		else
 		{
+			// the player doesn't have a matching door to destroy
 			assert(!"there was no to destroy");
+			LOG("error: no matching door to destroy");
+			m_result = EGameResult::Error;
 		}
 	}
 
@@ -567,6 +573,9 @@ void GameLogic::ResolvePremonition()
 	assert(foundAll);
 	if (!foundAll)
 	{
+		// invalid card indices encountered
+		LOG("error: re-ordered cards are invalid");
+		m_result = EGameResult::Error;
 		return;
 	}
 
