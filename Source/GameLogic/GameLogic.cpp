@@ -25,7 +25,7 @@ GameLogic::GameLogic(PlayerInterface& player, Logging::PlatformLogHook logHook)
 	#endif
 
 	// create the game state
-	m_gameState.reset(new InternalGameState());
+	m_gameState = std::make_unique<InternalGameState>();
 }
 
 // -------------------------------------------------------------------------------------------------
