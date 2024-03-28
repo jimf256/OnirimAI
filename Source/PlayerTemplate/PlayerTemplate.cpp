@@ -51,7 +51,7 @@ void PlayerTemplate::OnDoorModified(EColor color, EDoorModification modification
 void PlayerTemplate::ResolveTurnAction(const PublicGameState& state, ETurnAction& choice, std::size_t& handIndex)
 {
 	// play the first card in hand
-	choice = ETurnAction::PlayCard;
+	choice = ETurnAction::DiscardCard;
 	handIndex = 0;
 }
 
