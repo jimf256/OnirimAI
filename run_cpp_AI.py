@@ -16,7 +16,7 @@ if __name__ == '__main__':
     runs = int(input('run count: '))
     t = time.monotonic()
     devnull = subprocess.DEVNULL
-    command = f'Binaries\Onirim.exe {ai_module_name} runs={runs}'
+    command = f'Binaries\\Onirim.exe {ai_module_name} runs={runs}'
     proc = subprocess.run(command, stdin=devnull, stdout=devnull, stderr=devnull, shell=False)
 
     results = {}
