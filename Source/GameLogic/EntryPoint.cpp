@@ -7,7 +7,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <map>
+#include <unordered_map>
 #include <cassert>
 
 #define WIN32_LEAN_AND_MEAN
@@ -83,15 +83,17 @@ int main(int argc, char* argv[])
 		std::cout << "using random seed: " << Random::GetSeed() << "\n";
 		std::cout << "running the game " << runs << ((runs > 1) ? " times" : " time") << "\n\n";
 
+		// cache the logging hook to be passed to the game logic
+		auto logLambda = [](const std::string& str) { OutputDebugStringA(str.c_str()); };
+
 		// run multiple times and cache the results
-		std::map<EGameResult, int> results;
+		std::unordered_map<EGameResult, int> results;
 		for (int i = 0; i < runs; ++i)
 		{
 			PlayerInterface* player = g_createPlayer();
 			if (player != nullptr)
 			{
 				// create and run the game logic
-				auto logLambda = [](const std::string& str) { OutputDebugStringA(str.c_str()); };
 				GameLogic logic(*player, logLambda);
 				logic.Run();
 				g_destroyPlayer(player);
