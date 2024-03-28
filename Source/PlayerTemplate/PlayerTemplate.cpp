@@ -26,8 +26,6 @@ void PlayerTemplate::OnGameStarted(const PublicGameState& state)
 
 void PlayerTemplate::OnGameEnded(const PublicGameState& state, EGameResult result)
 {
-	std::cout << "Game Result: " << LogUtils::GetGameResult(result) << "\n";
-	system("pause");
 }
 
 // -------------------------------------------------------------------------------------------------
@@ -52,8 +50,8 @@ void PlayerTemplate::OnDoorModified(EColor color, EDoorModification modification
 
 void PlayerTemplate::ResolveTurnAction(const PublicGameState& state, ETurnAction& choice, std::size_t& handIndex)
 {
-	// discard the first card in hand
-	choice = ETurnAction::DiscardCard;
+	// play the first card in hand
+	choice = ETurnAction::PlayCard;
 	handIndex = 0;
 }
 
@@ -61,8 +59,8 @@ void PlayerTemplate::ResolveTurnAction(const PublicGameState& state, ETurnAction
 
 void PlayerTemplate::ResolveNightmareCard(const PublicGameState& state, EResolveNightmareAction& choice, EColor& color)
 {
-	// discard hand
-	choice = EResolveNightmareAction::DiscardHand;
+	// discard from deck
+	choice = EResolveNightmareAction::DiscardDeck;
 }
 
 // -------------------------------------------------------------------------------------------------

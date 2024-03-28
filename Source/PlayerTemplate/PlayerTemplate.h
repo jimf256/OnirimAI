@@ -24,14 +24,14 @@ public:
 
 // -------------------------------------------------------------------------------------------------
 
-extern "C" __declspec(dllexport) PlayerInterface * CreatePlayerInstance()
+extern "C" __declspec(dllexport) PlayerInterface* CreatePlayerInstance()
 {
 	return new PlayerTemplate();
 }
 
 // -------------------------------------------------------------------------------------------------
 
-extern "C" __declspec(dllexport) void DestroyPlayerInstance(PlayerInterface * player)
+extern "C" __declspec(dllexport) void DestroyPlayerInstance(PlayerInterface* player)
 {
 	delete player;
 }
