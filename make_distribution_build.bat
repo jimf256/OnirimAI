@@ -5,6 +5,10 @@ set /P include_cpp_ai=include C++ AI player? (y/n):
 echo.
 
 echo | call clean_build_all.bat
+if %ERRORLEVEL% neq 0 (
+	pause
+	exit /b %ERRORLEVEL%
+)
 
 set build_dir=%~dp0Build
 if exist %build_dir% (

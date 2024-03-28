@@ -1,6 +1,13 @@
 @echo off
 
-call "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsMSBuildCmd.bat"
+set vscmd="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsMSBuildCmd.bat"
+if not exist %vscmd% (
+	echo error: requires Visual Studio 2022 - installation not found
+	pause
+	exit /B 1
+)
+
+call %vscmd%
 
 msbuild "Source\Onirim.sln" /t:Clean /p:Configuration=Debug;Platform=x64
 msbuild "Source\Onirim.sln" /t:Clean /p:Configuration=Debug_NoLogging;Platform=x64
