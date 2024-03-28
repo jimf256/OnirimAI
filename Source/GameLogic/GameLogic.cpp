@@ -300,6 +300,12 @@ void GameLogic::ResolveTurn()
 					m_player.OnLabrynthModified(m_gameState->GetLabrynth());
 				}
 			}
+			else
+			{
+				// an invalid card was chosen to be played
+				LOG("error: attempted to play an invalid card option");
+				m_result = EGameResult::Error;
+			}
 		}
 
 		else if (choice == ETurnAction::DiscardCard)
@@ -315,6 +321,12 @@ void GameLogic::ResolveTurn()
 				{
 					ResolvePremonition();
 				}
+			}
+			else
+			{
+				// an invalid card was chosen to be discarded
+				LOG("error: attempted to discard an invalid card option");
+				m_result = EGameResult::Error;
 			}
 		}
 	}

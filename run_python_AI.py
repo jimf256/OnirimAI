@@ -111,11 +111,14 @@ def RunGameInstances(runs):
                 results[int(line[0])] = int(line[2:].strip())
 
     wins = results.get(1, 0)
+    losses = results.get(2, 0) + results.get(3, 0)
+    errors = results.get(4, 0)
     plays = sum(results.values())
     print('\n::: results :::')
     print(f'played:   {plays}')
     print(f'wins:     {wins}')
-    print(f'losses:   {plays - wins}')
+    print(f'losses:   {losses}')
+    print(f'errors:   {errors}')
     print(f'win rate: {(wins/plays)*100:.2f}%')
 
 

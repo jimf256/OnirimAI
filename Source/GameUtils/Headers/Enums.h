@@ -58,6 +58,7 @@ enum class EGameResult
 	Win                = 1,
 	Loss_OutOfCards    = 2,
 	Loss_DiscardedDoor = 3,
+	Error              = 4,
 };
 
 // -------------------------------------------------------------------------------------------------
