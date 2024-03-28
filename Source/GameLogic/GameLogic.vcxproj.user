@@ -3,16 +3,16 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LocalDebuggerWorkingDirectory>..\..\</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>ConsolePlayer</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>AIPlayer runs=100000</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_NoLogging|x64'">
     <LocalDebuggerWorkingDirectory>..\..\</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>ConsolePlayer</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>AIPlayer runs=100000</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LocalDebuggerWorkingDirectory>..\..\</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>ConsolePlayer</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>AIPlayer runs=100000</LocalDebuggerCommandArguments>
   </PropertyGroup>
 </Project>
